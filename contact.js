@@ -203,6 +203,7 @@ scene.background =
 /* =========================================================
    CAMERA
    ========================================================= */
+
 const isMobileViewport =
   () => window.innerWidth <= 560;
 
@@ -324,12 +325,25 @@ renderer.setSize(
   window.innerHeight
 );
 
-renderer.domElement.style.position = "fixed";
-renderer.domElement.style.top = "0";
-renderer.domElement.style.left = "0";
-renderer.domElement.style.width = "100%";
-renderer.domElement.style.height = "100%";
-renderer.domElement.style.zIndex = "1";
+
+renderer.domElement.style.position =
+  "fixed";
+
+renderer.domElement.style.top =
+  "0";
+
+renderer.domElement.style.left =
+  "0";
+
+renderer.domElement.style.width =
+  "100%";
+
+renderer.domElement.style.height =
+  "100%";
+
+renderer.domElement.style.zIndex =
+  "1";
+
 
 renderer.outputColorSpace =
   THREE.SRGBColorSpace;
@@ -1229,6 +1243,7 @@ function createTerminalInterface() {
       ? 288
       : 480;
 
+
   const element =
     document.createElement(
       "div"
@@ -1451,7 +1466,6 @@ function createTerminalInterface() {
 
           </button>
 
-
         </form>
 
       </div>
@@ -1496,18 +1510,20 @@ function createTerminalInterface() {
 
 
   const scaleX =
-  5.45 /
-  screenWidth;
+    5.45 /
+    screenWidth;
 
-const scaleY =
-  2.9 /
-  screenHeight;
 
-object.scale.set(
-  scaleX,
-  scaleY,
-  1
-);
+  const scaleY =
+    2.9 /
+    screenHeight;
+
+
+  object.scale.set(
+    scaleX,
+    scaleY,
+    1
+  );
 
 
   screen.add(
@@ -2151,26 +2167,30 @@ function animate() {
      Smooth pointer
      ----------------------------------------------- */
 
- const delta =
-  clock.getDelta();
-
-const pointerSmoothing =
-  1 - Math.exp(-1.52 * delta);
-
-pointer.x +=
-  (
-    targetPointer.x -
-    pointer.x
-  ) *
-  pointerSmoothing;
+  const delta =
+    clock.getDelta();
 
 
-pointer.y +=
-  (
-    targetPointer.y -
-    pointer.y
-  ) *
-  pointerSmoothing;
+  const pointerSmoothing =
+    1 - Math.exp(
+      -1.52 * delta
+    );
+
+
+  pointer.x +=
+    (
+      targetPointer.x -
+      pointer.x
+    ) *
+    pointerSmoothing;
+
+
+  pointer.y +=
+    (
+      targetPointer.y -
+      pointer.y
+    ) *
+    pointerSmoothing;
 
 
   /* -----------------------------------------------
@@ -2197,31 +2217,34 @@ pointer.y +=
       );
 
 
- const cameraSmoothing =
-  1 - Math.exp(-2.77 * delta);
-
-camera.position.x +=
-  (
-    finalCameraX -
-    camera.position.x
-  ) *
-  cameraSmoothing;
+  const cameraSmoothing =
+    1 - Math.exp(
+      -2.77 * delta
+    );
 
 
-camera.position.y +=
-  (
-    finalCameraY -
-    camera.position.y
-  ) *
-  cameraSmoothing;
+  camera.position.x +=
+    (
+      finalCameraX -
+      camera.position.x
+    ) *
+    cameraSmoothing;
 
 
-camera.position.z +=
-  (
-    cameraTargetPosition.z -
-    camera.position.z
-  ) *
-  cameraSmoothing;
+  camera.position.y +=
+    (
+      finalCameraY -
+      camera.position.y
+    ) *
+    cameraSmoothing;
+
+
+  camera.position.z +=
+    (
+      cameraTargetPosition.z -
+      camera.position.z
+    ) *
+    cameraSmoothing;
 
 
   /* -----------------------------------------------
@@ -2273,26 +2296,29 @@ camera.position.z +=
       );
 
 
- const terminalSmoothing =
-  1 - Math.exp(-1.52 * delta);
-
-terminal.rotation.y +=
-  (
-    pointer.x *
-      terminalRotationMultiplier -
-    terminal.rotation.y
-  ) *
-  terminalSmoothing;
+  const terminalSmoothing =
+    1 - Math.exp(
+      -1.52 * delta
+    );
 
 
-terminal.rotation.x +=
-  (
-    -pointer.y *
-      terminalRotationMultiplier *
-      0.5 -
-    terminal.rotation.x
-  ) *
-  terminalSmoothing;
+  terminal.rotation.y +=
+    (
+      pointer.x *
+        terminalRotationMultiplier -
+      terminal.rotation.y
+    ) *
+    terminalSmoothing;
+
+
+  terminal.rotation.x +=
+    (
+      -pointer.y *
+        terminalRotationMultiplier *
+        0.5 -
+      terminal.rotation.x
+    ) *
+    terminalSmoothing;
 
 
   /* -----------------------------------------------
@@ -2308,16 +2334,22 @@ terminal.rotation.x +=
      Render
      ----------------------------------------------- */
 
-const fovSmoothing =
-  1 - Math.exp(-4.99 * delta);
+  const fovSmoothing =
+    1 - Math.exp(
+      -4.99 * delta
+    );
 
-camera.fov +=
-  (
-    targetCameraFov -
-    camera.fov
-  ) * fovSmoothing;
+
+  camera.fov +=
+    (
+      targetCameraFov -
+      camera.fov
+    ) *
+    fovSmoothing;
+
 
   camera.updateProjectionMatrix();
+
 
   renderer.render(
     scene,
@@ -2376,12 +2408,14 @@ window.addEventListener(
       normalCameraPosition.z =
         8.8;
 
+
       normalCameraPosition.y =
         1.45;
 
 
       zoomCameraPosition.z =
         7.2;
+
 
       zoomCameraPosition.y =
         2.05;
@@ -2395,12 +2429,14 @@ window.addEventListener(
       normalCameraPosition.z =
         8.4;
 
+
       normalCameraPosition.y =
         1.55;
 
 
       zoomCameraPosition.z =
         5.0;
+
 
       zoomCameraPosition.y =
         2.20;
@@ -2414,12 +2450,14 @@ window.addEventListener(
       normalCameraPosition.z =
         6.2;
 
+
       normalCameraPosition.y =
         1.65;
 
 
       zoomCameraPosition.z =
         3.65;
+
 
       zoomCameraPosition.y =
         2.20;

@@ -20,6 +20,11 @@ const container =
     "#contact-webgl"
   );
 
+  const isFirefox =
+  /firefox|fxios/i.test(
+    navigator.userAgent
+  );
+
 
 if (!container) {
 
@@ -365,49 +370,44 @@ container.appendChild(
 /* =========================================================
    CSS3D RENDERER
    ========================================================= */
+let cssRenderer = null;
 
-const cssRenderer =
-  new CSS3DRenderer();
+if (!isFirefox) {
 
+  cssRenderer =
+    new CSS3DRenderer();
 
-cssRenderer.setSize(
-  window.innerWidth,
-  window.innerHeight
-);
+  cssRenderer.setSize(
+    window.innerWidth,
+    window.innerHeight
+  );
 
+  cssRenderer.domElement.style.position =
+    "fixed";
 
-cssRenderer.domElement.style.position =
-  "fixed";
+  cssRenderer.domElement.style.top =
+    "0";
 
+  cssRenderer.domElement.style.left =
+    "0";
 
-cssRenderer.domElement.style.top =
-  "0";
+  cssRenderer.domElement.style.width =
+    "100%";
 
+  cssRenderer.domElement.style.height =
+    "100%";
 
-cssRenderer.domElement.style.left =
-  "0";
+  cssRenderer.domElement.style.pointerEvents =
+    "none";
 
+  cssRenderer.domElement.style.zIndex =
+    "2";
 
-cssRenderer.domElement.style.width =
-  "100%";
+  container.appendChild(
+    cssRenderer.domElement
+  );
 
-
-cssRenderer.domElement.style.height =
-  "100%";
-
-
-cssRenderer.domElement.style.pointerEvents =
-  "none";
-
-
-cssRenderer.domElement.style.zIndex =
-  "2";
-
-
-container.appendChild(
-  cssRenderer.domElement
-);
-
+}
 
 /* =========================================================
    MATERIALS
@@ -1496,63 +1496,296 @@ function createTerminalInterface() {
      CSS3D OBJECT
      ======================================================= */
 
-  const object =
-    new CSS3DObject(
-      element
-    );
+  /* =======================================================
+   FIREFOX DOM FALLBACK
+   ======================================================= */
 
+if (isFirefox) {
 
-  object.position.set(
-    0,
-    0,
-    0.012
+  element.classList.add(
+    "contact-terminal-ui--firefox"
   );
 
-
-  const scaleX =
-    5.45 /
-    screenWidth;
-
-
-  const scaleY =
-    2.9 /
-    screenHeight;
-
-
-  object.scale.set(
-    scaleX,
-    scaleY,
-    1
+  document.body.appendChild(
+    element
   );
-
-
-  screen.add(
-    object
-  );
-
 
   setupForm(
     element
   );
 
-
   setupScreenZoomControl(
     element
   );
-
 
   startTerminalBoot(
     element
   );
 
+  return element;
 
-  return object;
+}
+
+
+/* =======================================================
+   CSS3D OBJECT
+   ======================================================= */
+
+const object =
+  new CSS3DObject(
+    element
+  );
+
+object.position.set(
+  0,
+  0,
+  0.012
+);
+
+const scaleX =
+  5.45 /
+  screenWidth;
+
+const scaleY =
+  2.9 /
+  screenHeight;
+
+object.scale.set(
+  scaleX,
+  scaleY,
+  1
+);
+
+screen.add(
+  object
+);
+
+setupForm(
+  element
+);
+
+setupScreenZoomControl(
+  element
+);
+
+startTerminalBoot(
+  element
+);
+
+return object;
 
 }
 
 
 const screenUI =
   createTerminalInterface();
+
+  /* =========================================================
+   FIREFOX DOM OVERLAY
+   ========================================================= */
+
+function updateFirefoxScreenOverlay(
+  element
+) {
+
+  if (!isFirefox || !element) {
+    return;
+  }
+
+  const screenWidth = 5.45;
+  const screenHeight = 2.9;
+
+  const halfWidth =
+    screenWidth / 2;
+
+  const halfHeight =
+    screenHeight / 2;
+
+  const corners = [
+
+    new THREE.Vector3(
+      -halfWidth,
+      halfHeight,
+      0.012
+    ),
+
+    new THREE.Vector3(
+      halfWidth,
+      halfHeight,
+      0.012
+    ),
+
+    new THREE.Vector3(
+      halfWidth,
+      -halfHeight,
+      0.012
+    ),
+
+    new THREE.Vector3(
+      -halfWidth,
+      -halfHeight,
+      0.012
+    )
+
+  ];
+
+  screen.updateWorldMatrix(
+    true,
+    false
+  );
+
+  const projected =
+    corners.map(
+      (corner) => {
+
+        const world =
+          corner.clone();
+
+        screen.localToWorld(
+          world
+        );
+
+        world.project(
+          camera
+        );
+
+        return {
+
+          x:
+            (
+              world.x + 1
+            ) *
+            0.5 *
+            window.innerWidth,
+
+          y:
+            (
+              1 - world.y
+            ) *
+            0.5 *
+            window.innerHeight
+
+        };
+
+      }
+    );
+
+  const topLeft =
+    projected[0];
+
+  const topRight =
+    projected[1];
+
+  const bottomRight =
+    projected[2];
+
+  const bottomLeft =
+    projected[3];
+
+  const centerX =
+    (
+      topLeft.x +
+      topRight.x +
+      bottomRight.x +
+      bottomLeft.x
+    ) /
+    4;
+
+  const centerY =
+    (
+      topLeft.y +
+      topRight.y +
+      bottomRight.y +
+      bottomLeft.y
+    ) /
+    4;
+
+  const widthTop =
+    Math.hypot(
+      topRight.x -
+        topLeft.x,
+      topRight.y -
+        topLeft.y
+    );
+
+  const widthBottom =
+    Math.hypot(
+      bottomRight.x -
+        bottomLeft.x,
+      bottomRight.y -
+        bottomLeft.y
+    );
+
+  const heightLeft =
+    Math.hypot(
+      bottomLeft.x -
+        topLeft.x,
+      bottomLeft.y -
+        topLeft.y
+    );
+
+  const heightRight =
+    Math.hypot(
+      bottomRight.x -
+        topRight.x,
+      bottomRight.y -
+        topRight.y
+    );
+
+  const projectedWidth =
+    (
+      widthTop +
+      widthBottom
+    ) /
+    2;
+
+  const projectedHeight =
+    (
+      heightLeft +
+      heightRight
+    ) /
+    2;
+
+  const angle =
+    Math.atan2(
+      topRight.y -
+        topLeft.y,
+      topRight.x -
+        topLeft.x
+    );
+
+  const baseWidth =
+    parseFloat(
+      element.style.width
+    );
+
+  const baseHeight =
+    parseFloat(
+      element.style.height
+    );
+
+  const scaleX =
+    projectedWidth /
+    baseWidth;
+
+  const scaleY =
+    projectedHeight /
+    baseHeight;
+
+  element.style.left =
+    `${centerX}px`;
+
+  element.style.top =
+    `${centerY}px`;
+
+  element.style.transform =
+    [
+      "translate(-50%, -50%)",
+      `rotate(${angle}rad)`,
+      `scale(${scaleX}, ${scaleY})`
+    ].join(" ");
+
+}
 
 
 /* =========================================================
@@ -2350,17 +2583,25 @@ function animate() {
 
   camera.updateProjectionMatrix();
 
+renderer.render(
+  scene,
+  camera
+);
 
-  renderer.render(
-    scene,
-    camera
+if (isFirefox) {
+
+  updateFirefoxScreenOverlay(
+    screenUI
   );
 
+} else {
 
   cssRenderer.render(
     scene,
     camera
   );
+
+}
 
 }
 

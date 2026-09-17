@@ -1,0 +1,1307 @@
+/* =========================================================
+   CONTACT
+   CODE × CREATIVITY
+   Communication Terminal
+   ========================================================= */
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.contact-page {
+  position: relative;
+
+  width: 100%;
+  min-height: 100vh;
+
+  overflow: hidden;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   THREE.JS
+   ========================================================= */
+
+#contact-webgl {
+  position: fixed;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  z-index: 1;
+}
+
+
+/*
+ * CSS3DRenderer creates another DOM layer.
+ */
+
+#contact-webgl > div {
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.contact-header {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 88px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 48px;
+
+  z-index: 20;
+
+  pointer-events: none;
+
+  font-family: "Inter", sans-serif;
+}
+
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+.contact-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  width: auto;
+  height: auto;
+
+  border: 0;
+
+  color: #f7f8fc;
+
+  text-decoration: none;
+
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size: 25px;
+  line-height: 1;
+
+  font-weight: 700;
+
+  letter-spacing: -0.08em;
+
+  background: transparent;
+
+  backdrop-filter: none;
+
+  transition:
+    color 0.25s ease;
+}
+
+.contact-brand:hover {
+  color: #ffffff;
+}
+
+/* =========================================================
+   HEADER ACTIONS
+   ========================================================= */
+
+.contact-header-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 22px;
+
+  pointer-events: auto;
+}
+
+
+/* =========================================================
+   HEADER LINKS
+   ========================================================= */
+
+.back-home,
+.language-switch {
+  color:
+    rgba(245, 245, 247, 0.78);
+
+  text-decoration: none;
+
+  font-size: 12px;
+
+  font-weight: 500;
+
+  letter-spacing: 0.08em;
+
+  transition:
+    color 0.25s ease;
+}
+
+
+.back-home:hover,
+.language-switch:hover {
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   CV
+   ========================================================= */
+
+.cv-button {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  min-height: 38px;
+
+  padding: 0 15px;
+
+  border: 1px solid
+    rgba(157, 140, 255, 0.45);
+
+  color: #f5f5f7;
+
+  text-decoration: none;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.08em;
+
+  background:
+    rgba(11, 13, 17, 0.5);
+
+  backdrop-filter: blur(12px);
+
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease,
+    transform 0.3s ease;
+}
+
+
+.cv-button span {
+  font-size: 15px;
+
+  line-height: 1;
+}
+
+
+.cv-button:hover {
+  border-color:
+    #9d8cff;
+
+  background:
+    rgba(157, 140, 255, 0.1);
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* =========================================================
+   TERMINAL UI
+   ========================================================= */
+
+.contact-terminal-ui {
+  position: relative;
+
+  box-sizing: border-box;
+
+  overflow: hidden;
+
+  color: #f5f5f7;
+
+  font-family:
+    "Inter",
+    sans-serif;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(7, 12, 22, 0.985),
+      rgba(5, 8, 15, 0.99)
+    );
+
+  border:
+    1px solid
+    rgba(110, 214, 255, 0.3);
+
+  border-radius: 5px;
+
+  box-shadow:
+
+    inset 0 0 40px
+    rgba(110, 214, 255, 0.035),
+
+    inset 0 0 3px
+    rgba(255, 255, 255, 0.1),
+
+    0 0 25px
+    rgba(110, 214, 255, 0.07);
+
+  transform-origin:
+    center center;
+
+  pointer-events: auto;
+}
+
+
+/* =========================================================
+   SCREEN SCANLINES
+   ========================================================= */
+
+.contact-terminal-ui::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  z-index: 50;
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 3px,
+      rgba(255, 255, 255, 0.012) 4px
+    );
+}
+
+
+/* =========================================================
+   SCREEN GLOW
+   ========================================================= */
+
+.contact-terminal-ui::after {
+  content: "";
+
+  position: absolute;
+
+  width: 220px;
+  height: 220px;
+
+  top: -100px;
+  right: -90px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(110, 214, 255, 0.07);
+
+  filter: blur(55px);
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   INTERFACE
+   ========================================================= */
+
+.terminal-interface {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  box-sizing: border-box;
+
+  padding: 28px 34px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   TOP BAR
+   ========================================================= */
+
+.terminal-topbar {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding-bottom: 13px;
+
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+}
+
+
+/* =========================================================
+   TERMINAL BRAND
+   ========================================================= */
+
+.terminal-brand {
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.13em;
+
+  color:
+    rgba(245, 245, 247, 0.82);
+}
+
+
+/* =========================================================
+   TERMINAL STATUS
+   ========================================================= */
+
+.terminal-status {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  font-size: 8px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.12em;
+
+  color:
+    rgba(110, 214, 255, 0.9);
+}
+
+
+/* =========================================================
+   STATUS DOT
+   ========================================================= */
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background:
+    #6ed6ff;
+
+  box-shadow:
+    0 0 10px
+    rgba(110, 214, 255, 0.85);
+
+  animation:
+    statusPulse 2s
+    ease-in-out infinite;
+}
+
+
+@keyframes statusPulse {
+
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+}
+
+
+/* =========================================================
+   SYSTEM
+   ========================================================= */
+
+.terminal-system {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+
+  padding-top: 13px;
+}
+
+
+.terminal-line {
+  font-size: 8px;
+
+  line-height: 1.4;
+
+  letter-spacing: 0.08em;
+
+  color:
+    rgba(110, 214, 255, 0.72);
+}
+
+
+.terminal-muted {
+  color:
+    rgba(150, 154, 163, 0.42);
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.terminal-main {
+  flex: 1;
+
+  min-height: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  padding-top: 16px;
+}
+
+
+/* =========================================================
+   HEADING
+   ========================================================= */
+
+.terminal-heading {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+
+  margin-bottom: 16px;
+
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size: 25px;
+
+  line-height: 0.96;
+
+  font-weight: 600;
+
+  letter-spacing: -0.045em;
+
+  color: #f5f5f7;
+
+  text-shadow:
+    0 0 15px
+    rgba(157, 140, 255, 0.18);
+}
+
+
+.terminal-heading span:last-child {
+  color:
+    #9d8cff;
+}
+
+
+/* =========================================================
+   CHANNELS
+   ========================================================= */
+
+.terminal-channels {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 6px;
+
+  margin-bottom: 15px;
+}
+
+
+.terminal-channel {
+  display: grid;
+
+  grid-template-columns:
+    auto 1fr auto;
+
+  align-items: center;
+
+  gap: 8px;
+
+  min-width: 0;
+
+  padding: 7px 8px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  color:
+    rgba(245, 245, 247, 0.72);
+
+  text-decoration: none;
+
+  font-size: 7px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.07em;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+
+.terminal-channel:hover {
+  color: #ffffff;
+
+  border-color:
+    rgba(110, 214, 255, 0.45);
+
+  background:
+    rgba(110, 214, 255, 0.055);
+}
+
+
+.channel-index {
+  color:
+    rgba(157, 140, 255, 0.7);
+
+  font-size: 6px;
+}
+
+
+.channel-arrow {
+  color:
+    rgba(110, 214, 255, 0.8);
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.terminal-form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+
+.terminal-field {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+
+.terminal-field label {
+  font-size: 6px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.13em;
+
+  color:
+    rgba(150, 154, 163, 0.7);
+}
+
+
+.terminal-field input,
+.terminal-field textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.09);
+
+  outline: none;
+
+  padding: 6px 8px;
+
+  color: #f5f5f7;
+
+  background:
+    rgba(0, 0, 0, 0.3);
+
+  font-family:
+    "Inter",
+    sans-serif;
+
+  font-size: 8px;
+
+  letter-spacing: 0.03em;
+
+  resize: none;
+
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+.terminal-field input {
+  height: 27px;
+}
+
+
+.terminal-field textarea {
+  height: 50px;
+}
+
+
+.terminal-field input::placeholder,
+.terminal-field textarea::placeholder {
+  color:
+    rgba(150, 154, 163, 0.32);
+}
+
+
+.terminal-field input:focus,
+.terminal-field textarea:focus {
+  border-color:
+    rgba(110, 214, 255, 0.5);
+
+  background:
+    rgba(110, 214, 255, 0.035);
+
+  box-shadow:
+    0 0 14px
+    rgba(110, 214, 255, 0.06);
+}
+
+
+/* =========================================================
+   SUBMIT
+   ========================================================= */
+
+.terminal-submit {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  width: 100%;
+
+  height: 32px;
+
+  margin-top: 2px;
+
+  padding: 0 10px;
+
+  border:
+    1px solid
+    rgba(157, 140, 255, 0.45);
+
+  outline: none;
+
+  color: #f5f5f7;
+
+  background:
+    rgba(157, 140, 255, 0.08);
+
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size: 7px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.1em;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+.terminal-submit:hover {
+  border-color:
+    #9d8cff;
+
+  background:
+    rgba(157, 140, 255, 0.15);
+
+  box-shadow:
+    0 0 18px
+    rgba(157, 140, 255, 0.12);
+}
+
+
+.terminal-submit:disabled {
+  opacity: 0.55;
+
+  cursor: wait;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.terminal-footer {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-top: 10px;
+
+  padding-top: 8px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  font-size: 6px;
+
+  font-weight: 500;
+
+  letter-spacing: 0.1em;
+
+  color:
+    rgba(150, 154, 163, 0.5);
+}
+
+
+.terminal-cursor {
+  color:
+    #6ed6ff;
+
+  animation:
+    cursorBlink 1s
+    steps(1)
+    infinite;
+}
+
+
+@keyframes cursorBlink {
+
+  0%,
+  49% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
+
+}
+
+
+/* =========================================================
+   SCREEN ZOOM
+   ========================================================= */
+
+#contact-webgl {
+  cursor: default;
+}
+
+
+body.contact-screen-zoom #contact-webgl {
+  cursor: zoom-out;
+}
+
+
+.terminal-zoom-control {
+  appearance: none;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #6ed6ff;
+
+  font: inherit;
+
+  font-size: 14px;
+
+  line-height: 1;
+
+  padding: 4px;
+
+  margin-left: 10px;
+
+  cursor: pointer;
+
+  opacity: 0.7;
+
+  transition:
+    opacity 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+
+.terminal-zoom-control:hover {
+  opacity: 1;
+
+  color: #9d8cff;
+
+  transform: scale(1.12);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 560px) {
+
+  /* -------------------------------------------------------
+     HEADER
+     ------------------------------------------------------- */
+
+  .contact-header {
+    height: 72px;
+
+    padding: 0 18px;
+  }
+
+
+  /*
+   * Desktop navigation is replaced by the
+   * shared mobile command menu.
+   */
+
+  .contact-header-actions {
+    display: none;
+  }
+
+
+  .contact-header .mobile-menu-toggle {
+    display: inline-flex;
+
+    pointer-events: auto;
+
+    position: relative;
+
+    z-index: 30;
+  }
+
+
+  .contact-brand {
+    width: 40px;
+    height: 40px;
+
+    font-size: 14px;
+  }
+
+
+  /* -------------------------------------------------------
+     PAGE
+     ------------------------------------------------------- */
+
+  .contact-page {
+    width: 100%;
+
+    min-height: 100svh;
+
+    overflow: hidden;
+  }
+
+
+  /* -------------------------------------------------------
+     TERMINAL
+     ------------------------------------------------------- */
+
+  .contact-terminal-ui {
+    border-radius: 4px;
+  }
+
+
+  .terminal-interface {
+    padding: 12px 14px;
+  }
+
+
+  /* -------------------------------------------------------
+     TOP BAR
+     ------------------------------------------------------- */
+
+  .terminal-topbar {
+    padding-bottom: 7px;
+
+    gap: 6px;
+  }
+
+
+  .terminal-brand {
+    min-width: 0;
+
+    max-width: 60%;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    font-size: 8px;
+
+    letter-spacing: 0.08em;
+  }
+
+
+  .terminal-status {
+    flex-shrink: 0;
+
+    gap: 5px;
+
+    font-size: 6px;
+
+    letter-spacing: 0.07em;
+  }
+
+
+  .status-dot {
+    width: 4px;
+    height: 4px;
+  }
+
+
+  .terminal-zoom-control {
+    font-size: 12px;
+
+    padding: 2px;
+
+    margin-left: 4px;
+  }
+
+
+  /* -------------------------------------------------------
+     SYSTEM
+     ------------------------------------------------------- */
+
+  /*
+   * The boot/status messages are hidden on mobile
+   * to preserve vertical space for the contact form.
+   */
+
+  .terminal-system {
+    display: none;
+  }
+
+
+  /* -------------------------------------------------------
+     MAIN
+     ------------------------------------------------------- */
+
+  .terminal-main {
+    padding-top: 8px;
+  }
+
+
+  /* -------------------------------------------------------
+     HEADING
+     ------------------------------------------------------- */
+
+  .terminal-heading {
+    max-width: 96%;
+
+    margin-bottom: 8px;
+
+    font-size: 20px;
+
+    line-height: 0.96;
+
+    letter-spacing: -0.035em;
+  }
+
+
+  .terminal-heading span {
+    display: block;
+
+    max-width: 100%;
+  }
+
+
+  /* -------------------------------------------------------
+     CHANNELS
+     ------------------------------------------------------- */
+
+  .terminal-channels {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+    gap: 4px;
+
+    margin-bottom: 8px;
+  }
+
+
+  .terminal-channel {
+    min-width: 0;
+
+    gap: 4px;
+
+    padding: 5px 6px;
+
+    overflow: hidden;
+
+    font-size: 5.5px;
+
+    letter-spacing: 0.04em;
+  }
+
+
+  .channel-index {
+    font-size: 5px;
+  }
+
+
+  .channel-arrow {
+    font-size: 8px;
+  }
+
+
+  /* -------------------------------------------------------
+     FORM
+     ------------------------------------------------------- */
+
+  .terminal-form {
+    gap: 4px;
+  }
+
+
+  .terminal-field {
+    gap: 2px;
+  }
+
+
+  .terminal-field label {
+    font-size: 5px;
+
+    letter-spacing: 0.08em;
+  }
+
+
+  .terminal-field input,
+  .terminal-field textarea {
+    padding: 4px 6px;
+
+    font-size: 6.5px;
+
+    line-height: 1.2;
+  }
+
+
+  .terminal-field input {
+    height: 22px;
+  }
+
+
+  .terminal-field textarea {
+    height: 38px;
+  }
+
+
+  /* -------------------------------------------------------
+     SUBMIT
+     ------------------------------------------------------- */
+
+  .terminal-submit {
+    height: 26px;
+
+    margin-top: 1px;
+
+    padding: 0 8px;
+
+    font-size: 6px;
+
+    letter-spacing: 0.07em;
+  }
+
+
+  /* -------------------------------------------------------
+     FOOTER
+     ------------------------------------------------------- */
+
+  .terminal-footer {
+    margin-top: 4px;
+
+    padding-top: 4px;
+
+    font-size: 5px;
+
+    letter-spacing: 0.07em;
+  }
+
+
+  /* =======================================================
+     SPANISH MOBILE
+     ======================================================= */
+
+  html:lang(es) .terminal-topbar {
+    gap: 6px;
+  }
+
+
+  html:lang(es) .terminal-brand {
+    max-width: 62%;
+
+    font-size: 7px;
+
+    letter-spacing: 0.055em;
+  }
+
+
+  html:lang(es) .terminal-status {
+    font-size: 5.8px;
+
+    letter-spacing: 0.06em;
+  }
+
+
+  html:lang(es) .terminal-heading {
+    max-width: 96%;
+
+    font-size: 18px;
+
+    line-height: 0.96;
+
+    letter-spacing: -0.025em;
+  }
+
+
+  html:lang(es) .terminal-channel {
+    font-size: 5.2px;
+
+    letter-spacing: 0.035em;
+  }
+
+
+  html:lang(es) .terminal-field label {
+    font-size: 4.8px;
+
+    letter-spacing: 0.07em;
+  }
+
+
+  html:lang(es) .terminal-field input,
+  html:lang(es) .terminal-field textarea {
+    font-size: 6.2px;
+  }
+
+
+  html:lang(es) .terminal-submit {
+    font-size: 5.7px;
+
+    letter-spacing: 0.065em;
+  }
+
+
+  html:lang(es) .terminal-footer {
+    font-size: 4.8px;
+
+    letter-spacing: 0.065em;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+  .contact-header {
+    padding: 0 14px;
+  }
+
+
+  .contact-brand {
+    width: 38px;
+    height: 38px;
+
+    font-size: 13px;
+  }
+
+
+  .terminal-interface {
+    padding: 10px 12px;
+  }
+
+
+  .terminal-heading {
+    font-size: 18px;
+  }
+
+
+  .terminal-channel {
+    padding: 4px 5px;
+
+    font-size: 5px;
+  }
+
+
+  .terminal-field input,
+  .terminal-field textarea {
+    font-size: 6px;
+  }
+
+
+  .terminal-submit {
+    height: 24px;
+
+    font-size: 5.5px;
+  }
+
+
+  html:lang(es) .terminal-heading {
+    font-size: 17px;
+  }
+
+
+  html:lang(es) .terminal-channel {
+    font-size: 4.8px;
+  }
+
+}

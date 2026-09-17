@@ -1,0 +1,716 @@
+/* =========================================================
+   ABOUT PAGE
+   ========================================================= */
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+  background: #060708;
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   3D BACKGROUND
+   ========================================================= */
+
+#about-webgl {
+  position: fixed;
+  inset: 0;
+
+  width: 100%;
+  height: 100vh;
+
+  z-index: 0;
+
+  background: #060708;
+
+  pointer-events: none;
+}
+
+
+#about-webgl canvas {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+}
+
+
+/* =========================================================
+   ABOUT PAGE
+   ========================================================= */
+
+.about-page {
+  position: relative;
+
+  width: 100%;
+  min-height: 100vh;
+
+  z-index: 1;
+
+  pointer-events: none;
+}
+
+
+.about-section {
+  position: relative;
+
+  width: 100%;
+  height: 100vh;
+}
+
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.about-header {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 84px;
+
+  padding: 0 clamp(24px, 4vw, 64px);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  box-sizing: border-box;
+
+  z-index: 20;
+
+  pointer-events: auto;
+}
+
+
+.about-brand {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  color: #f5f5f7;
+
+  text-decoration: none;
+
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+
+  letter-spacing: -0.02em;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  border-radius: 50%;
+
+  background: rgba(11, 13, 17, 0.55);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease,
+    transform 0.3s ease;
+}
+
+
+.about-brand:hover {
+  border-color: rgba(157, 140, 255, 0.6);
+
+  background: rgba(157, 140, 255, 0.08);
+
+  transform: translateY(-1px);
+}
+
+
+.about-header-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+}
+
+
+.back-home,
+.language-switch,
+.cv-button {
+  font-family: "Inter", sans-serif;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  text-decoration: none;
+
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease,
+    background 0.3s ease;
+}
+
+
+.back-home,
+.language-switch {
+  color: #969aa3;
+}
+
+
+.back-home:hover,
+.language-switch:hover {
+  color: #f5f5f7;
+}
+
+
+.cv-button {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 11px 16px;
+
+  color: #f5f5f7;
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  border-radius: 999px;
+
+  background: rgba(11, 13, 17, 0.55);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+
+.cv-button span {
+  font-size: 15px;
+
+  line-height: 1;
+}
+
+
+.cv-button:hover {
+  border-color: rgba(157, 140, 255, 0.55);
+
+  background: rgba(157, 140, 255, 0.08);
+}
+
+
+/* =========================================================
+   ABOUT CONTENT
+   ========================================================= */
+
+.about-content {
+  position: absolute;
+
+  left: clamp(32px, 7vw, 110px);
+
+  top: 50%;
+
+  width: min(560px, 44vw);
+
+  transform: translateY(-50%);
+
+  pointer-events: auto;
+}
+
+
+/* =========================================================
+   EYEBROW
+   ========================================================= */
+
+.about-eyebrow {
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  margin-bottom: 24px;
+
+  color: #969aa3;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  letter-spacing: 0.16em;
+
+  text-transform: uppercase;
+}
+
+
+.about-status {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color: #b7b2d8;
+}
+
+
+.about-status::before {
+  content: "";
+
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #9d8cff;
+
+  box-shadow:
+    0 0 10px rgba(157, 140, 255, 0.65);
+}
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.about-title {
+  margin: 0;
+
+  color: #f5f5f7;
+
+  font-family: "Space Grotesk", sans-serif;
+
+  font-size: clamp(42px, 5vw, 76px);
+
+  font-weight: 600;
+
+  line-height: 0.95;
+
+  letter-spacing: -0.05em;
+
+  max-width: 520px;
+}
+
+
+.about-specialization {
+  margin: 18px 0 0;
+
+  color: #969aa3;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 14px;
+
+  font-weight: 400;
+
+  letter-spacing: 0.01em;
+}
+
+
+/* =========================================================
+   VALUES
+   ========================================================= */
+
+.about-values {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 16px;
+
+  margin-top: 42px;
+
+  width: min(460px, 100%);
+}
+
+
+.about-value {
+  display: grid;
+
+  grid-template-columns: 100px 1fr;
+
+  gap: 24px;
+
+  padding-bottom: 14px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+.about-value-label {
+  color: #70747d;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+}
+
+
+.about-value-text {
+  color: #e8e8ed;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 14px;
+
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   ABOUT STATEMENT
+   ========================================================= */
+
+.about-statement {
+  margin-top: 38px;
+
+  width: min(500px, 100%);
+}
+
+
+.about-statement-label {
+  display: block;
+
+  margin-bottom: 12px;
+
+  color: #70747d;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.14em;
+
+  text-transform: uppercase;
+}
+
+.about-statement-text {
+  margin: 0;
+
+  max-width: 520px;
+
+  color: #f5f5f7;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 15px;
+
+  font-weight: 500;
+
+  line-height: 1.7;
+
+  text-shadow:
+    0 1px 12px rgba(0, 0, 0, 0.75);
+}
+
+
+/* =========================================================
+   FOOTER MARKER
+   ========================================================= */
+
+.about-footer-marker {
+  position: fixed;
+
+  left: clamp(32px, 7vw, 110px);
+  bottom: 30px;
+
+  color: #5f626b;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 9px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.14em;
+
+  z-index: 10;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .about-content {
+    left: 32px;
+
+    width: min(520px, 50vw);
+  }
+
+  .about-title {
+    font-size: clamp(40px, 7vw, 64px);
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  html,
+  body {
+    overflow: auto;
+  }
+
+
+  .about-page {
+    min-height: 100vh;
+  }
+
+
+  .about-section {
+    min-height: 100vh;
+
+    height: auto;
+  }
+
+
+  .about-header {
+    height: 72px;
+
+    padding: 0 20px;
+  }
+
+
+  .about-header-actions {
+    gap: 12px;
+  }
+
+
+  .back-home,
+  .language-switch {
+    font-size: 12px;
+  }
+
+
+  .cv-button {
+    padding: 9px 13px;
+
+    font-size: 12px;
+  }
+
+
+  .about-brand {
+    width: 38px;
+    height: 38px;
+
+    font-size: 14px;
+  }
+
+
+  .about-content {
+    position: relative;
+
+    left: auto;
+    top: auto;
+
+    width: auto;
+
+    margin: 0 20px;
+
+    padding-top: 150px;
+    padding-bottom: 120px;
+
+    transform: none;
+  }
+
+
+  .about-eyebrow {
+    margin-bottom: 20px;
+  }
+
+
+  .about-title {
+    max-width: 100%;
+
+    font-size: clamp(38px, 12vw, 54px);
+  }
+
+
+  .about-values {
+    margin-top: 36px;
+  }
+
+
+  .about-value {
+    grid-template-columns: 90px 1fr;
+
+    gap: 16px;
+  }
+
+
+  .about-statement {
+    margin-top: 34px;
+  }
+
+
+  .about-footer-marker {
+    left: 20px;
+    bottom: 20px;
+  }
+
+}
+
+/* =========================================================
+   MOBILE ABOUT FIX
+   ========================================================= */
+
+@media (max-width: 560px) {
+
+  /* -------------------------------------------------------
+     HEADER
+     ------------------------------------------------------- */
+
+  .about-header {
+    height: 72px;
+    padding: 0 18px;
+  }
+
+  /* Hide desktop navigation */
+  .about-header-actions {
+    display: none;
+  }
+
+  /* Show command menu */
+  .about-header .mobile-menu-toggle {
+    display: inline-flex;
+  }
+
+
+  /* -------------------------------------------------------
+     ABOUT CONTENT
+     ------------------------------------------------------- */
+
+  .about-content {
+    width: calc(100% - 36px);
+
+    margin: 0 18px;
+
+    padding-top: 125px;
+    padding-bottom: 80px;
+
+    box-sizing: border-box;
+  }
+
+
+  /* -------------------------------------------------------
+     EYEBROW
+     ------------------------------------------------------- */
+
+  .about-eyebrow {
+    margin-bottom: 18px;
+  }
+
+
+  /* -------------------------------------------------------
+     TITLE
+     ------------------------------------------------------- */
+
+  .about-title {
+    max-width: 100%;
+
+    font-size: clamp(38px, 11.5vw, 52px);
+
+    line-height: 0.96;
+  }
+
+
+  /* -------------------------------------------------------
+     SPECIALIZATION
+     ------------------------------------------------------- */
+
+  .about-specialization {
+    margin-top: 16px;
+
+    font-size: 13px;
+  }
+
+
+  /* -------------------------------------------------------
+     VALUES
+     ------------------------------------------------------- */
+
+  .about-values {
+    width: 100%;
+
+    margin-top: 32px;
+
+    gap: 14px;
+  }
+
+
+  .about-value {
+    grid-template-columns: 88px 1fr;
+
+    gap: 14px;
+
+    padding-bottom: 13px;
+  }
+
+
+  .about-value-label {
+    font-size: 9px;
+  }
+
+
+  .about-value-text {
+    font-size: 13px;
+
+    line-height: 1.4;
+  }
+
+
+  /* -------------------------------------------------------
+     ABOUT STATEMENT
+     ------------------------------------------------------- */
+
+  .about-statement {
+    width: 100%;
+
+    margin-top: 30px;
+  }
+
+
+  .about-statement-label {
+    font-size: 9px;
+  }
+
+
+  .about-statement-text {
+    max-width: 100%;
+
+    font-size: 13px;
+
+    line-height: 1.65;
+  }
+
+
+  /* -------------------------------------------------------
+     FOOTER MARKER
+     ------------------------------------------------------- */
+
+  .about-footer-marker {
+    left: 18px;
+    bottom: 18px;
+  }
+
+}

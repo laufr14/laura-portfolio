@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Laura Félix — Software Developer focused on digital products."
+  >
+
+  <title>About — Laura Felix</title>
+
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <!-- Global styles -->
+  <link
+    rel="stylesheet"
+    href="./styles.css"
+  >
+
+
+  <!-- About styles -->
+  <link
+    rel="stylesheet"
+    href="./about.css"
+  >
+
+</head>
+
+
+<body>
+
+  <!-- =========================================================
+       GLOBAL PAGE TRANSITION
+       ========================================================= -->
+
+  <div
+    id="page-transition"
+    class="page-transition"
+    aria-hidden="true"
+  >
+
+    <div class="page-transition__scan"></div>
+
+    <div class="page-transition__core">
+  <div class="page-transition__loader">
+    <span class="page-transition__loader-dot"></span>
+  </div>
+</div>
+
+  </div>
+
+
+  <!-- =====================================================
+       3D BACKGROUND
+       ===================================================== -->
+
+  <div
+    id="about-webgl"
+    aria-hidden="true"
+  ></div>
+
+
+  <!-- =====================================================
+       NAVBAR
+       ===================================================== -->
+
+  <header class="about-header">
+
+    <a
+      class="about-brand"
+      href="./index.html"
+      aria-label="Back to home"
+    >
+      LF
+    </a>
+
+
+    <div class="about-header-actions">
+
+      <a
+        class="back-home"
+        href="./index.html"
+      >
+        ← Home
+      </a>
+
+
+      <a
+        class="language-switch"
+        href="./sobre-mi-es.html"
+      >
+        ES
+      </a>
+
+
+      <a
+        class="cv-button"
+        href="#"
+      >
+        Download CV
+        <span>↓</span>
+      </a>
+
+    </div>
+
+
+    <!-- MOBILE MENU BUTTON -->
+    <button
+      class="mobile-menu-toggle"
+      type="button"
+      aria-label="Open navigation menu"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+    >
+
+      <span
+        class="mobile-menu-toggle__indicator"
+        aria-hidden="true"
+      ></span>
+
+      <span class="mobile-menu-toggle__text">
+        MENU
+      </span>
+
+    </button>
+
+  </header>
+
+
+  <!-- =====================================================
+       MOBILE NAVIGATION
+       ===================================================== -->
+
+  <nav
+    id="mobile-menu"
+    class="mobile-menu"
+    aria-label="Mobile navigation"
+    aria-hidden="true"
+  >
+
+    <div
+      class="mobile-menu__backdrop"
+      data-menu-close
+      aria-hidden="true"
+    ></div>
+
+
+    <div
+      class="mobile-menu__panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="mobile-menu-title"
+    >
+
+      <div class="mobile-menu__header">
+
+        <div>
+
+          <span
+            id="mobile-menu-title"
+            class="mobile-menu__title"
+          >
+            LF // NAVIGATION
+          </span>
+
+          <span class="mobile-menu__status">
+
+            <span
+              class="mobile-menu__status-dot"
+              aria-hidden="true"
+            ></span>
+
+            ONLINE
+
+          </span>
+
+        </div>
+
+
+        <button
+          class="mobile-menu__close"
+          type="button"
+          aria-label="Close navigation menu"
+          data-menu-close
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="mobile-menu__navigation">
+
+        <span class="mobile-menu__label">
+          EXPLORE
+        </span>
+
+
+        <a
+          class="mobile-menu__link"
+          href="./projects.html"
+        >
+          <span class="mobile-menu__number">01</span>
+
+          <span class="mobile-menu__link-content">
+
+            <span class="mobile-menu__link-title">
+              Projects
+            </span>
+
+            <span class="mobile-menu__link-description">
+              Selected work
+            </span>
+
+          </span>
+
+          <span class="mobile-menu__arrow">
+            ↗
+          </span>
+        </a>
+
+
+        <a
+          class="mobile-menu__link"
+          href="./technologies.html"
+        >
+          <span class="mobile-menu__number">02</span>
+
+          <span class="mobile-menu__link-content">
+
+            <span class="mobile-menu__link-title">
+              Technologies
+            </span>
+
+            <span class="mobile-menu__link-description">
+              My technical stack
+            </span>
+
+          </span>
+
+          <span class="mobile-menu__arrow">
+            ↗
+          </span>
+        </a>
+
+
+        <a
+          class="mobile-menu__link"
+          href="./about.html"
+        >
+          <span class="mobile-menu__number">03</span>
+
+          <span class="mobile-menu__link-content">
+
+            <span class="mobile-menu__link-title">
+              About
+            </span>
+
+            <span class="mobile-menu__link-description">
+              Developer profile
+            </span>
+
+          </span>
+
+          <span class="mobile-menu__arrow">
+            ↗
+          </span>
+        </a>
+
+
+        <a
+          class="mobile-menu__link"
+          href="./contact.html"
+        >
+          <span class="mobile-menu__number">04</span>
+
+          <span class="mobile-menu__link-content">
+
+            <span class="mobile-menu__link-title">
+              Contact
+            </span>
+
+            <span class="mobile-menu__link-description">
+              Start a conversation
+            </span>
+
+          </span>
+
+          <span class="mobile-menu__arrow">
+            ↗
+          </span>
+        </a>
+
+      </div>
+
+
+      <div class="mobile-menu__footer">
+
+        <div class="mobile-menu__footer-row">
+
+          <span class="mobile-menu__footer-label">
+            LANGUAGE
+          </span>
+
+          <a
+            class="mobile-menu__language mobile-menu__language--active"
+            href="./about.html"
+          >
+            EN
+          </a>
+
+          <span class="mobile-menu__language-separator">
+            /
+          </span>
+
+          <a
+            class="mobile-menu__language"
+            href="./sobre-mi-es.html"
+          >
+            ES
+          </a>
+
+        </div>
+
+
+        <a
+          class="mobile-menu__cv"
+          href="#"
+          aria-label="Download CV"
+        >
+          <span>Download CV</span>
+          <span>↓</span>
+        </a>
+
+
+        <div class="mobile-menu__connection">
+
+          <span class="mobile-menu__connection-dot"></span>
+
+          CONNECTION: SECURE
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </nav>
+
+
+  <!-- =====================================================
+       ABOUT PAGE
+       ===================================================== -->
+
+  <main class="about-page">
+
+    <section
+      class="about-section"
+      aria-labelledby="about-title"
+    >
+
+      <div class="about-content">
+
+
+        <!-- PROFILE LABEL -->
+
+        <div class="about-eyebrow">
+
+          <span class="about-status">
+            AVAILABLE
+          </span>
+
+        </div>
+
+
+        <!-- MAIN TITLE -->
+
+        <h1
+          id="about-title"
+          class="about-title"
+        >
+          SOFTWARE DEVELOPER
+        </h1>
+
+
+        <p class="about-specialization">
+          Mobile · Web · Product
+        </p>
+
+
+        <!-- PROFILE VALUES -->
+
+        <div class="about-values">
+
+          <div class="about-value">
+
+            <span class="about-value-label">
+              Focus
+            </span>
+
+            <span class="about-value-text">
+              Digital products
+            </span>
+
+          </div>
+
+
+          <div class="about-value">
+
+            <span class="about-value-label">
+              Approach
+            </span>
+
+            <span class="about-value-text">
+              Code × Creativity
+            </span>
+
+          </div>
+
+
+          <div class="about-value">
+
+            <span class="about-value-label">
+              Mindset
+            </span>
+
+            <span class="about-value-text">
+              Learn · Build · Improve
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- ABOUT STATEMENT -->
+
+        <div class="about-statement">
+
+          <span class="about-statement-label">
+            // ABOUT
+          </span>
+
+          <p class="about-statement-text">
+            I build digital products with a balance between
+            technical thinking, usability and visual detail.
+          </p>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       THREE.JS
+       ===================================================== -->
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+    }
+  }
+  </script>
+
+
+  <script
+    type="module"
+    src="./about.js"
+  ></script>
+
+
+  <script
+    type="module"
+    src="./mobile-menu.js"
+  ></script>
+
+  <script src="./page-transition.js"></script>
+
+</body>
+
+</html>

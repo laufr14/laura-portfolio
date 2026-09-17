@@ -1,0 +1,1041 @@
+/* =========================================================
+   PROJECTS PAGE
+   ========================================================= */
+
+.projects-page {
+  position: relative;
+  z-index: 3;
+
+  width: min(1280px, calc(100% - 80px));
+  margin: 0 auto;
+
+  padding: 150px 0 100px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.projects-header {
+  position: fixed;
+  z-index: 10;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 84px;
+
+  padding: 0 clamp(24px, 4vw, 64px);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.projects-brand {
+  font: 700 25px/1 "Space Grotesk";
+  letter-spacing: -.08em;
+  color: #F7F8FC;
+}
+
+.projects-brand::first-letter {
+  color: #A99CFF;
+}
+
+.projects-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.back-home,
+.language-switch {
+  color: #D2D6E0;
+  font-size: 11px;
+  letter-spacing: .08em;
+}
+
+.back-home:hover,
+.language-switch:hover {
+  color: #FFFFFF;
+}
+
+
+/* =========================================================
+   INTRO
+   ========================================================= */
+
+.projects-heading {
+  max-width: 620px;
+
+  margin-bottom: 65px;
+
+  text-shadow:
+    0 3px 20px rgba(0,0,0,.35);
+}
+
+.projects-eyebrow {
+  margin: 0 0 18px;
+
+  color: #B9AEFF;
+
+  font: 600 10px/1 Inter, sans-serif;
+
+  letter-spacing: .28em;
+}
+
+.projects-heading h1 {
+   margin: 0;
+
+  color: #171A2A;
+
+  font: 600 clamp(60px, 7vw, 104px)/.9
+        "Space Grotesk", sans-serif;
+
+  letter-spacing: -.07em;
+
+  text-shadow:
+    0 2px 12px rgba(255,255,255,.35);
+}
+
+
+.projects-intro {
+max-width: 520px;
+
+  margin: 28px 0 0;
+  padding: 16px 20px;
+
+  color: #252A3A;
+
+  font-size: 14px;
+  line-height: 1.65;
+
+ background: rgba(255,255,255,.28);
+
+  border: 1px solid rgba(255,255,255,.18);
+
+  border-radius: 14px;
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 12px 30px rgba(20,25,50,.08),
+    inset 0 1px 0 rgba(255,255,255,.25);
+}
+
+
+/* =========================================================
+   PROJECT GRID
+   ========================================================= */
+
+.projects-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+
+/* =========================================================
+   PROJECT CARD
+   ========================================================= */
+
+.project {
+  position: relative;
+
+  min-height: 520px;
+
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  border: 1px solid rgba(255,255,255,.22);
+
+  border-radius: 24px;
+
+  background:
+   linear-gradient(
+    145deg,
+    rgba(10, 14, 28, 0.58),
+    rgba(25, 29, 52, 0.42)
+    );
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow:
+   0 25px 60px rgba(0,0,0,.22),
+  inset 0 1px 0 rgba(255,255,255,.10);
+}
+
+.project--featured {
+  grid-column: 1 / -1;
+
+  min-height: 600px;
+
+  display: grid;
+
+  grid-template-columns:
+    1.1fr .9fr;
+}
+
+
+/* =========================================================
+   NUMBER
+   ========================================================= */
+
+.project-number {
+  position: absolute;
+
+  top: 24px;
+  left: 25px;
+
+  z-index: 3;
+
+  color: #A99CFF;
+
+  font: 600 10px/1 Inter, sans-serif;
+
+  letter-spacing: .12em;
+}
+
+
+/* =========================================================
+   VISUAL
+   ========================================================= */
+
+.project-visual {
+  position: relative;
+
+  min-height: 300px;
+
+  display: grid;
+
+  place-items: center;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 50% 40%,
+      rgba(139,124,255,.18),
+      transparent 50%
+    ),
+    rgba(7,10,18,.45);
+}
+
+.project--featured .project-visual {
+  min-height: 600px;
+}
+
+
+/* =========================================================
+   NALIX
+   ========================================================= */
+
+.project-glow {
+  position: absolute;
+
+  width: 300px;
+  height: 300px;
+
+  border-radius: 50%;
+
+  background: rgba(139,124,255,.18);
+
+  filter: blur(70px);
+}
+
+.project-device {
+  position: relative;
+  z-index: 2;
+
+  width: min(75%, 570px);
+
+  transform: rotate(-2deg);
+
+  transition:
+    transform .45s ease;
+}
+
+.project:hover .project-device {
+  transform:
+    rotate(0deg)
+    translateY(-8px);
+}
+
+.project-device img {
+  width: 100%;
+
+  display: block;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 40px 80px rgba(0,0,0,.5);
+}
+
+
+/* =========================================================
+   LEARNINGPSYCHIX
+   ========================================================= */
+
+.learning-device {
+  width: 150px;
+  height: 300px;
+
+  padding: 7px;
+
+  border-radius: 27px;
+
+  background: #05070C;
+
+  border: 1px solid
+    rgba(255,255,255,.18);
+
+  box-shadow:
+    0 40px 80px rgba(0,0,0,.45);
+
+  transform: rotate(7deg);
+}
+
+.learning-screen {
+  height: 100%;
+
+  padding: 20px 14px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 18px;
+
+  border-radius: 21px;
+
+  background:
+    linear-gradient(
+      155deg,
+      #33256B,
+      #0B1020
+    );
+}
+
+.learning-screen span {
+  color: #B8AEFF;
+
+  font-size: 7px;
+
+  letter-spacing: .14em;
+}
+
+.learning-screen strong {
+  color: #F5F6FB;
+
+  font: 600 21px/1
+        "Space Grotesk";
+}
+
+
+/* =========================================================
+   CAFÉ AROMA
+   ========================================================= */
+
+.browser-window {
+  width: 78%;
+
+  aspect-ratio: 16 / 10;
+
+  overflow: hidden;
+
+  border-radius: 14px;
+
+  border: 1px solid
+    rgba(255,255,255,.16);
+
+  background: #110E0D;
+
+  box-shadow:
+    0 35px 80px rgba(0,0,0,.42);
+
+  transform: rotate(-2deg);
+}
+
+.browser-top {
+  height: 26px;
+
+  padding-left: 12px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  background: #080A0F;
+}
+
+.browser-top span {
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: #777D89;
+}
+
+.browser-content {
+  height: calc(100% - 26px);
+
+  padding: 9%;
+
+  background:
+    linear-gradient(
+      125deg,
+      #291A14,
+      #0D0D0E
+    );
+}
+
+.browser-content small {
+  color: #C7A68D;
+
+  font-size: 7px;
+
+  letter-spacing: .2em;
+}
+
+.browser-content strong {
+  display: block;
+
+  margin-top: 12px;
+
+  color: #F4EEE9;
+
+  font: 500 28px/1
+        "Space Grotesk";
+}
+
+
+/* =========================================================
+   INFORMATION
+   ========================================================= */
+
+.project-info {
+  position: relative;
+
+  padding: 42px 38px;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+}
+
+.project-category {
+  margin: 0 0 15px;
+
+  color: #A99CFF;
+
+  font: 600 9px/1 Inter, sans-serif;
+
+  letter-spacing: .18em;
+}
+
+.project-info h2 {
+  margin: 0;
+
+  color: #F7F8FC;
+
+  font: 500 42px/1
+        "Space Grotesk";
+
+  letter-spacing: -.055em;
+}
+
+.project-subtitle {
+  margin: 10px 0 0;
+
+  color: #D1D5DF;
+
+  font: 500 15px
+        "Space Grotesk";
+}
+
+.project-description {
+  max-width: 440px;
+
+  margin: 22px 0 0;
+
+  color: #AEB5C4;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+.project-actions {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-top: 28px;
+}
+
+.project-link {
+  padding: 11px 15px;
+
+  border: 1px solid
+    rgba(255,255,255,.15);
+
+  border-radius: 999px;
+
+  color: #DDE1E9;
+
+  font-size: 10px;
+
+  transition:
+    .25s ease;
+}
+
+.project-link:hover {
+  border-color:
+    rgba(169,156,255,.55);
+
+  color: #FFFFFF;
+
+  transform:
+    translateY(-2px);
+}
+
+.project-link--primary {
+  background:
+    rgba(139,124,255,.14);
+
+  border-color:
+    rgba(139,124,255,.38);
+
+  color: #C7BEFF;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .projects-page {
+    width: min(720px, calc(100% - 40px));
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project--featured {
+    grid-column: auto;
+
+    grid-template-columns: 1fr;
+
+    min-height: auto;
+  }
+
+  .project--featured .project-visual {
+    min-height: 430px;
+  }
+
+  .project-info {
+    padding: 35px 28px;
+  }
+
+}
+
+
+@media (max-width: 560px) {
+
+  .projects-header {
+    padding: 0 18px;
+  }
+
+  .back-home {
+    display: none;
+  }
+
+  .projects-page {
+    width: calc(100% - 28px);
+
+    padding-top: 115px;
+  }
+
+  .projects-heading h1 {
+    font-size: 62px;
+  }
+
+  .projects-intro {
+    font-size: 13px;
+  }
+
+  .project {
+    min-height: 470px;
+  }
+
+  .project--featured .project-visual {
+    min-height: 320px;
+  }
+
+  .project-device {
+    width: 90%;
+  }
+
+  .project-info {
+    padding: 30px 22px;
+  }
+
+  .project-info h2 {
+    font-size: 35px;
+  }
+
+}
+
+/* =========================================================
+   PROJECT REVEAL ON SCROLL
+   ========================================================= */
+
+.project {
+  opacity: 0;
+
+  transform:
+    translateY(60px)
+    scale(.98);
+
+  transition:
+    opacity .7s ease,
+    transform .7s cubic-bezier(.22, 1, .36, 1);
+}
+
+.project.is-visible {
+  opacity: 1;
+
+  transform:
+    translateY(0)
+    scale(1);
+}
+
+
+/* Stagger */
+
+.project:nth-child(1) {
+  transition-delay: 0ms;
+}
+
+.project:nth-child(2) {
+  transition-delay: 150ms;
+}
+
+.project:nth-child(3) {
+  transition-delay: 300ms;
+}
+
+/* =========================================================
+   PROJECTS HERO INTRO
+   ========================================================= */
+
+.projects-heading h1 {
+  opacity: 0;
+
+  transform: translateY(35px);
+
+  animation:
+    projectsTitleIn .9s cubic-bezier(.22, 1, .36, 1)
+    forwards;
+}
+
+
+.projects-intro {
+  opacity: 0;
+
+  transform: translateY(20px);
+
+  animation:
+    projectsIntroIn .8s cubic-bezier(.22, 1, .36, 1)
+    .18s forwards;
+}
+
+
+@keyframes projectsTitleIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+@keyframes projectsIntroIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+/* =========================================================
+   PROJECT GRID — EQUAL CARDS
+   ========================================================= */
+
+.projects-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 20px;
+
+  align-items: stretch;
+}
+
+
+
+
+.project,
+.project--featured {
+  width: 100%;
+
+  min-height: 850px;
+
+  display: flex;
+  flex-direction: column;
+
+  grid-column: auto;
+}
+
+
+
+
+.project-visual {
+  height: 500px;
+  min-height: 500px;
+
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+}
+
+/* =========================================================
+   REAL PROJECT SCREENSHOTS
+   ========================================================= */
+
+.project-image {
+ width: auto;
+  max-width: 90%;
+  max-height: 500px;
+
+  height: auto;
+
+  display: block;
+
+  border-radius: 16px;
+
+  object-fit: contain;
+
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, .45);
+
+  transform: translateY(0) scale(1);
+
+  transition:
+    transform .45s cubic-bezier(.22, 1, .36, 1),
+    box-shadow .45s ease;
+}
+
+.project:hover .project-image {
+  transform:
+    translateY(-8px)
+    scale(1.015);
+
+  box-shadow:
+    0 40px 90px rgba(0, 0, 0, .55);
+}
+
+
+
+.project-info {
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: flex-start;
+
+  padding: 30px;
+}
+
+/* Equal visual height for all project cards */
+
+.project--featured .project-visual {
+  height: 500px;
+  min-height: 500px;
+}
+
+/* =========================================================
+   PROJECT INTERACTION
+   ========================================================= */
+
+.project:not(.is-visible) {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.project.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* =========================================================
+   CLICK HINT
+   ========================================================= */
+
+.project-click-hint {
+  z-index: 9999;
+  font-size: 42px;
+  transform: translate(-50%, -50%);
+  animation: clickHintTap 1.4s ease-in-out infinite;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, .35));
+}
+
+@keyframes clickHintTap {
+
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    transform: translate(-50%, -42%) scale(.92);
+  }
+
+}
+
+/* =========================================================
+   MOBILE FIX
+   ========================================================= */
+
+@media (max-width: 560px) {
+
+  /* -------------------------------------------------------
+     HEADER
+     ------------------------------------------------------- */
+
+  .projects-header {
+    height: 72px;
+    padding: 0 18px;
+  }
+
+  .projects-header-actions {
+    display: none;
+  }
+
+  .projects-header .mobile-menu-toggle {
+    display: inline-flex;
+  }
+
+
+  /* -------------------------------------------------------
+     PROJECTS PAGE
+     ------------------------------------------------------- */
+
+  .projects-page {
+    width: calc(100% - 28px);
+    margin: 0 auto;
+    padding: 100px 0 40px;
+  }
+
+
+  /* -------------------------------------------------------
+     GRID
+     ------------------------------------------------------- */
+
+  /*
+   * Important:
+   * This overrides the later desktop rule
+   * grid-template-columns: repeat(3, ...).
+   */
+
+  .projects-grid {
+    width: 100%;
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
+
+
+  /* -------------------------------------------------------
+     PROJECT CARDS
+     ------------------------------------------------------- */
+
+  .project,
+  .project--featured {
+    width: 100%;
+    min-height: auto;
+    height: auto;
+
+    grid-column: auto;
+
+    border-radius: 22px;
+  }
+
+
+  /* -------------------------------------------------------
+     PROJECT VISUAL
+     ------------------------------------------------------- */
+
+  .project-visual,
+  .project--featured .project-visual {
+    width: 100%;
+
+    height: 300px;
+    min-height: 300px;
+  }
+
+
+  /* -------------------------------------------------------
+     PROJECT IMAGES
+     ------------------------------------------------------- */
+
+  .project-image {
+    width: auto;
+    max-width: 82%;
+    max-height: 255px;
+
+    object-fit: contain;
+  }
+
+
+  .project-device {
+    width: min(78%, 280px);
+  }
+
+
+  .project-device img {
+    width: 100%;
+  }
+
+
+  /* -------------------------------------------------------
+     PROJECT INFORMATION
+     ------------------------------------------------------- */
+
+  .project-info {
+    width: 100%;
+
+    padding: 26px 22px 30px;
+
+    box-sizing: border-box;
+  }
+
+
+  .project-category {
+    margin-bottom: 12px;
+
+    font-size: 8px;
+  }
+
+
+  .project-info h2 {
+    font-size: 34px;
+    line-height: 1;
+  }
+
+
+  .project-subtitle {
+    max-width: 100%;
+
+    font-size: 14px;
+    line-height: 1.35;
+  }
+
+
+  .project-description {
+    max-width: 100%;
+
+    margin-top: 18px;
+
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+
+  /* -------------------------------------------------------
+     PROJECT LINKS
+     ------------------------------------------------------- */
+
+  .project-actions {
+    margin-top: 22px;
+
+    gap: 8px;
+  }
+
+  .project-link {
+    padding: 10px 13px;
+
+    font-size: 9px;
+  }
+
+
+  /* -------------------------------------------------------
+     PROJECT NUMBER
+     ------------------------------------------------------- */
+
+  .project-number {
+    top: 18px;
+    left: 19px;
+  }
+
+
+  /* -------------------------------------------------------
+     NALIX IMAGE
+     ------------------------------------------------------- */
+
+  .project-visual--nalix .project-device {
+    width: min(72%, 250px);
+  }
+
+
+  /* -------------------------------------------------------
+     CLICK HINT
+     ------------------------------------------------------- */
+
+  .project-click-hint {
+    font-size: 34px;
+  }
+
+}

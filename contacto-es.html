@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Contacta con Laura Félix — Desarrolladora de Software."
+  >
+
+  <title>Contacto — Laura Felix</title>
+
+
+  <!-- Fonts -->
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <!-- Global styles -->
+
+  <link
+    rel="stylesheet"
+    href="./styles.css"
+  >
+
+
+  <!-- Contact styles -->
+
+  <link
+    rel="stylesheet"
+    href="./contact.css"
+  >
+
+</head>
+
+
+<body>
+
+  <!-- =========================================================
+       GLOBAL PAGE TRANSITION
+       ========================================================= -->
+
+  <div
+    id="page-transition"
+    class="page-transition"
+    aria-hidden="true"
+  >
+
+    <div class="page-transition__scan"></div>
+
+   <div class="page-transition__core">
+  <div class="page-transition__loader">
+    <span class="page-transition__loader-dot"></span>
+  </div>
+</div>
+
+  </div>
+
+
+  <!-- =====================================================
+       THREE.JS CONTACT SCENE
+       ===================================================== -->
+
+  <div
+    id="contact-webgl"
+    aria-hidden="true"
+  ></div>
+
+
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
+  <header class="contact-header">
+
+
+    <a
+      class="contact-brand"
+      href="./es.html"
+      aria-label="Volver al inicio"
+    >
+
+      LF
+
+    </a>
+
+
+    <div class="contact-header-actions">
+
+
+      <a
+        class="back-home"
+        href="./es.html"
+      >
+
+        ← Inicio
+
+      </a>
+
+
+      <a
+        class="language-switch"
+        href="./contact.html"
+      >
+
+        EN
+
+      </a>
+
+
+      <a
+        class="cv-button"
+        href="#"
+        aria-label="Descargar CV"
+      >
+
+        Descargar CV
+
+        <span>
+          ↓
+        </span>
+
+      </a>
+
+
+    </div>
+
+
+    <!-- MOBILE MENU BUTTON -->
+
+    <button
+      class="mobile-menu-toggle"
+      type="button"
+      aria-label="Abrir menú de navegación"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+    >
+
+      <span
+        class="mobile-menu-toggle__indicator"
+        aria-hidden="true"
+      ></span>
+
+      <span class="mobile-menu-toggle__text">
+        MENÚ
+      </span>
+
+    </button>
+
+
+  </header>
+
+
+  <!-- =====================================================
+       MOBILE NAVIGATION
+       ===================================================== -->
+
+  <nav
+    id="mobile-menu"
+    class="mobile-menu"
+    aria-label="Navegación móvil"
+    aria-hidden="true"
+  >
+
+    <div
+      class="mobile-menu__backdrop"
+      data-menu-close
+      aria-hidden="true"
+    ></div>
+
+
+    <div
+      class="mobile-menu__panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="mobile-menu-title"
+    >
+
+
+      <!-- HEADER -->
+
+      <div class="mobile-menu__header">
+
+        <div>
+
+          <span
+            id="mobile-menu-title"
+            class="mobile-menu__title"
+          >
+            LF // NAVEGACIÓN
+          </span>
+
+
+          <span class="mobile-menu__status">
+
+            <span
+              class="mobile-menu__status-dot"
+              aria-hidden="true"
+            ></span>
+
+            EN LÍNEA
+
+          </span>
+
+        </div>
+
+
+        <button
+          class="mobile-menu__close"
+          type="button"
+          aria-label="Cerrar menú de navegación"
+          data-menu-close
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <!-- NAVIGATION -->
+
+      <div class="mobile-menu__navigation">
+
+        <span class="mobile-menu__label">
+          EXPLORAR
+        </span>
+
+
+        <a
+          class="mobile-menu__link"
+          href="./proyectos-es.html"
+        >
+
+          <span class="mobile-menu__number">
+            01
+          </span>
+
+
+          <span class="mobile-menu__link-content">
+
+            <span class="mobile-menu__link-title">
+              Proyectos
+            </span>
+
+            <span class="mobile-menu__link-description">
+              Trabajos seleccionados
+            </span>
+
+          </span>
+
+
+          <span class="mobile-menu__arrow">
+            ↗
+          </span>
+
+        </a>
+
+
+        <a
+          class="mobile-menu__link"
+          href="./tecnologias-es.html"
+        >
+
+          <span class="mobile-menu__number">
+            02
+          </span>
+
+
+          <span class="mobile-menu__link-content">
+
+            <span class="mobile-menu__link-title">
+              Tecnologías
+            </span>
+
+            <span class="mobile-menu__link-description">
+              Mi stack tecnológico
+            </span>
+
+          </span>
+
+
+          <span class="mobile-menu__arrow">
+            ↗
+          </span>
+
+        </a>
+
+
+        <a
+          class="mobile-menu__link"
+          href="./sobre-mi-es.html"
+        >
+
+          <span class="mobile-menu__number">
+            03
+          </span>
+
+
+          <span class="mobile-menu__link-content">
+
+            <span class="mobile-menu__link-title">
+              Sobre mí
+            </span>
+
+            <span class="mobile-menu__link-description">
+              Perfil de desarrolladora
+            </span>
+
+          </span>
+
+
+          <span class="mobile-menu__arrow">
+            ↗
+          </span>
+
+        </a>
+
+
+        <a
+          class="mobile-menu__link"
+          href="./contacto-es.html"
+        >
+
+          <span class="mobile-menu__number">
+            04
+          </span>
+
+
+          <span class="mobile-menu__link-content">
+
+            <span class="mobile-menu__link-title">
+              Contacto
+            </span>
+
+            <span class="mobile-menu__link-description">
+              Inicia una conversación
+            </span>
+
+          </span>
+
+
+          <span class="mobile-menu__arrow">
+            ↗
+          </span>
+
+        </a>
+
+      </div>
+
+
+      <!-- FOOTER -->
+
+      <div class="mobile-menu__footer">
+
+
+        <div class="mobile-menu__footer-row">
+
+          <span class="mobile-menu__footer-label">
+            IDIOMA
+          </span>
+
+
+          <a
+            class="mobile-menu__language"
+            href="./contact.html"
+          >
+            EN
+          </a>
+
+
+          <span class="mobile-menu__language-separator">
+            /
+          </span>
+
+
+          <a
+            class="mobile-menu__language mobile-menu__language--active"
+            href="./contacto-es.html"
+          >
+            ES
+          </a>
+
+        </div>
+
+
+        <a
+          class="mobile-menu__cv"
+          href="#"
+          aria-label="Descargar CV"
+        >
+
+          <span>
+            Descargar CV
+          </span>
+
+          <span>
+            ↓
+          </span>
+
+        </a>
+
+
+        <div class="mobile-menu__connection">
+
+          <span class="mobile-menu__connection-dot"></span>
+
+          CONEXIÓN: SEGURA
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+  </nav>
+
+
+  <!-- =====================================================
+       CONTACT PAGE
+       ===================================================== -->
+
+  <main class="contact-page">
+
+    <section
+      class="contact-section"
+      aria-label="Contacto"
+    >
+
+      <!--
+
+        La interfaz de contacto real es generada
+        por contact.js y colocada sobre la pantalla
+        de la terminal mediante CSS3DRenderer.
+
+        No existe un panel de contacto externo
+        en esta página.
+
+      -->
+
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       THREE.JS IMPORT MAP
+       ===================================================== -->
+
+  <script type="importmap">
+
+  {
+    "imports": {
+
+      "three":
+        "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+
+      "three/addons/":
+        "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+
+    }
+  }
+
+  </script>
+
+
+  <!-- Contact scene -->
+
+  <script
+    type="module"
+    src="./contact.js"
+  ></script>
+
+
+  <!-- Mobile menu -->
+
+  <script
+    type="module"
+    src="./mobile-menu.js"
+  ></script>
+
+  <script src="./page-transition.js"></script>
+
+</body>
+
+</html>

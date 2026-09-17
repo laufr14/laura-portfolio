@@ -1495,16 +1495,19 @@ function createTerminalInterface() {
   );
 
 
-  const scale =
-    5.35 /
-    screenWidth;
+  const scaleX =
+  5.45 /
+  screenWidth;
 
+const scaleY =
+  2.9 /
+  screenHeight;
 
-  object.scale.set(
-    scale,
-    scale,
-    scale
-  );
+object.scale.set(
+  scaleX,
+  scaleY,
+  1
+);
 
 
   screen.add(

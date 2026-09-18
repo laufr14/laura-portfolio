@@ -505,7 +505,9 @@ max-width: 520px;
   font-size: 10px;
 
   transition:
-    .25s ease;
+    border-color .25s ease,
+    color .25s ease,
+    transform .25s ease;
 }
 
 .project-link:hover {
@@ -604,6 +606,108 @@ max-width: 520px;
 
   .project-info h2 {
     font-size: 35px;
+  }
+
+}
+
+/* =========================================================
+   MOBILE LANDSCAPE
+   ========================================================= */
+
+@media (max-width: 900px) and (orientation: landscape) {
+
+  .projects-page {
+    width: calc(100% - 28px);
+    margin: 0 auto;
+    padding: 88px 0 28px;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px;
+  }
+
+  .project,
+  .project--featured {
+    width: 100%;
+    min-height: auto;
+    height: auto;
+    grid-column: auto;
+  }
+
+  /*
+   * Keep the project visual compact in landscape.
+   */
+
+  .project-visual,
+  .project--featured .project-visual {
+    width: 100%;
+    height: 245px;
+    min-height: 245px;
+  }
+
+  /*
+   * Nalix phone
+   */
+
+  .project-visual--nalix .project-device {
+    width: min(32vw, 190px);
+  }
+
+  /*
+   * Project information stays visible below
+   * the visual instead of being placed beside it.
+   */
+
+  .project-info {
+    width: 100%;
+    padding: 20px 20px 22px;
+    box-sizing: border-box;
+  }
+
+  .project-category {
+    margin-bottom: 9px;
+    font-size: 7px;
+  }
+
+  .project-info h2 {
+    font-size: 30px;
+    line-height: 1;
+  }
+
+  .project-subtitle {
+    margin-top: 6px;
+    font-size: 13px;
+  }
+
+  .project-description {
+    margin-top: 12px;
+    max-width: 620px;
+    font-size: 11px;
+    line-height: 1.55;
+  }
+
+  .project-actions {
+    margin-top: 16px;
+    gap: 7px;
+  }
+
+  .project-link {
+    padding: 8px 11px;
+    font-size: 8px;
+  }
+
+  .project-number {
+    top: 14px;
+    left: 16px;
+  }
+
+  /*
+   * Secondary projects
+   */
+
+  .project-image {
+    max-height: 205px;
   }
 
 }
@@ -1039,3 +1143,151 @@ max-width: 520px;
   }
 
 }
+
+/* =========================================================
+   PHONE LANDSCAPE
+   Optimized for narrow-height mobile screens in landscape.
+   ========================================================= */
+
+@media (orientation: landscape) and (max-height: 600px) {
+
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  .projects-page {
+    width: calc(100% - 28px);
+    margin: 0 auto;
+    padding: 82px 0 24px;
+  }
+
+  /* Compact the heading so the project starts higher. */
+
+  .projects-heading {
+    max-width: 100%;
+    margin-bottom: 22px;
+  }
+
+  .projects-heading h1 {
+    font-size: clamp(36px, 7vw, 56px);
+    line-height: .92;
+  }
+
+  .projects-intro {
+    max-width: 560px;
+    margin-top: 12px;
+    padding: 10px 14px;
+    font-size: 10px;
+    line-height: 1.45;
+  }
+
+  /* Keep the featured project horizontal in landscape. */
+
+  .projects-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px;
+  }
+
+  .project,
+  .project--featured {
+    width: 100%;
+    min-height: 0;
+    height: auto;
+    grid-column: auto;
+  }
+
+  .project--featured {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: .86fr 1.14fr;
+  }
+
+  /* Compact visual area. */
+
+  .project-visual,
+  .project--featured .project-visual {
+    width: 100%;
+    height: 230px;
+    min-height: 230px;
+  }
+
+  /* Nalix screenshot / device. */
+
+  .project-visual--nalix .project-device {
+    width: min(58%, 175px);
+  }
+
+  .project-device {
+    max-width: 100%;
+  }
+
+  .project-device img {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Keep the information visible inside the viewport. */
+
+  .project-info {
+    width: 100%;
+    min-width: 0;
+    padding: 20px 20px 18px;
+    box-sizing: border-box;
+    justify-content: center;
+  }
+
+  .project-category {
+    margin-bottom: 8px;
+    font-size: 7px;
+    letter-spacing: .14em;
+  }
+
+  .project-info h2 {
+    font-size: clamp(28px, 4.5vw, 38px);
+    line-height: .95;
+  }
+
+  .project-subtitle {
+    margin-top: 6px;
+    font-size: 11px;
+    line-height: 1.2;
+  }
+
+  .project-description {
+    max-width: 440px;
+    margin-top: 10px;
+    font-size: 10px;
+    line-height: 1.5;
+  }
+
+  .project-actions {
+    margin-top: 12px;
+    gap: 6px;
+  }
+
+  .project-link {
+    padding: 8px 10px;
+    font-size: 8px;
+  }
+
+  .project-number {
+    top: 13px;
+    left: 15px;
+    font-size: 8px;
+  }
+
+  /* Secondary cards stay compact as well. */
+
+  .project-image {
+    max-width: 78%;
+    max-height: 180px;
+  }
+
+  .project--featured .project-visual .project-glow {
+    width: 210px;
+    height: 210px;
+  }
+
+}
+

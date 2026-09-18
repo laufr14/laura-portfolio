@@ -7,14 +7,15 @@ function createClickHint() {
   clickHint = document.createElement("div");
 
   clickHint.className = "project-click-hint";
-  clickHint.textContent = "​🖱️​";
+  clickHint.textContent = "🖱️";
 
   clickHint.style.position = "fixed";
   clickHint.style.zIndex = "9999";
   clickHint.style.pointerEvents = "none";
   clickHint.style.fontSize = "42px";
   clickHint.style.transform = "translate(-50%, -50%)";
-  clickHint.style.transition = "left 0.4s ease, top 0.4s ease, opacity 0.3s ease";
+  clickHint.style.transition =
+    "left 0.4s ease, top 0.4s ease, opacity 0.3s ease";
   clickHint.style.opacity = "0";
 
   document.body.appendChild(clickHint);
@@ -26,6 +27,11 @@ function moveClickHint() {
   }
 
   const currentCard = projects[currentProject];
+
+  if (!currentCard) {
+    return;
+  }
+
   const rect = currentCard.getBoundingClientRect();
 
   clickHint.style.left = `${rect.left + rect.width / 2}px`;
@@ -40,11 +46,15 @@ function showNextProject() {
 
   const currentCard = projects[currentProject];
 
+  if (!currentCard) {
+    return;
+  }
+
   currentCard.classList.add("is-visible");
 
-  setTimeout(() => {
+  requestAnimationFrame(() => {
     moveClickHint();
-  }, 100);
+  });
 }
 
 function handleProjectClick(event) {
@@ -60,7 +70,9 @@ function handleProjectClick(event) {
 
   currentProject++;
 
-  clickHint.style.opacity = "0";
+  if (clickHint) {
+    clickHint.style.opacity = "0";
+  }
 
   if (currentProject < projects.length) {
     setTimeout(() => {
@@ -68,8 +80,10 @@ function handleProjectClick(event) {
     }, 400);
   } else {
     setTimeout(() => {
-      clickHint.remove();
-      clickHint = null;
+      if (clickHint) {
+        clickHint.remove();
+        clickHint = null;
+      }
     }, 400);
   }
 }
@@ -78,5 +92,7 @@ projects.forEach((project) => {
   project.addEventListener("click", handleProjectClick);
 });
 
-createClickHint();
-showNextProject();
+if (projects.length > 0) {
+  createClickHint();
+  showNextProject();
+}

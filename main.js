@@ -57,93 +57,970 @@ scene.add(blueLight);
 // ---------------------------------------------------------------
 
 const loader = new GLTFLoader();
+
 const roomGroup = new THREE.Group();
+
 scene.add(roomGroup);
 
 let roomModel = null;
+let roomPreview = null;
+
+
+/* ---------------------------------------------------------------
+   PREVIEW MATERIALS
+   --------------------------------------------------------------- */
+
+const previewFloorMaterial =
+  new THREE.MeshStandardMaterial({
+    color: 0x111522,
+    metalness: 0.55,
+    roughness: 0.62
+  });
+
+
+const previewWallMaterial =
+  new THREE.MeshStandardMaterial({
+    color: 0x171b29,
+    metalness: 0.42,
+    roughness: 0.68
+  });
+
+
+const previewFrameMaterial =
+  new THREE.MeshStandardMaterial({
+    color: 0x252b40,
+    metalness: 0.7,
+    roughness: 0.38
+  });
+
+
+const previewWindowMaterial =
+  new THREE.MeshBasicMaterial({
+    color: 0x222d5a,
+    transparent: true,
+    opacity: 0.72
+  });
+
+
+const previewLightMaterial =
+  new THREE.MeshStandardMaterial({
+    color: 0x7f75ff,
+    emissive: 0x4c42c7,
+    emissiveIntensity: 1.15,
+    metalness: 0.1,
+    roughness: 0.3
+  });
+
+
+const previewBlueLightMaterial =
+  new THREE.MeshStandardMaterial({
+    color: 0x6ea8ff,
+    emissive: 0x6ea8ff,
+    emissiveIntensity: 1.3,
+    metalness: 0.1,
+    roughness: 0.3
+  });
+
+
+/* ---------------------------------------------------------------
+   PREVIEW HELPER
+   --------------------------------------------------------------- */
+
+function createRoomPreview() {
+
+  const group =
+    new THREE.Group();
+
+
+  /* FLOOR */
+
+  const floor =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        10,
+        0.18,
+        12
+      ),
+      previewFloorMaterial
+    );
+
+  floor.position.set(
+    0,
+    -0.1,
+    -2
+  );
+
+  group.add(floor);
+
+
+  /* LEFT WALL */
+
+  const leftWall =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        0.18,
+        6,
+        12
+      ),
+      previewWallMaterial
+    );
+
+  leftWall.position.set(
+    -5,
+    3,
+    -2
+  );
+
+  group.add(leftWall);
+
+
+  /* RIGHT WALL */
+
+  const rightWall =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        0.18,
+        6,
+        12
+      ),
+      previewWallMaterial
+    );
+
+  rightWall.position.set(
+    5,
+    3,
+    -2
+  );
+
+  group.add(rightWall);
+
+
+  /* BACK WALL */
+
+  const backWall =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        10,
+        6,
+        0.18
+      ),
+      previewWallMaterial
+    );
+
+  backWall.position.set(
+    0,
+    3,
+    -8
+  );
+
+  group.add(backWall);
+
+
+  /* PANORAMIC WINDOW */
+
+  const windowPanel =
+    new THREE.Mesh(
+      new THREE.PlaneGeometry(
+        7.8,
+        3.8
+      ),
+      previewWindowMaterial
+    );
+
+  windowPanel.position.set(
+    0,
+    3.05,
+    -7.88
+  );
+
+  group.add(windowPanel);
+
+
+  /* WINDOW FRAME - TOP */
+
+  const frameTop =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        8.1,
+        0.14,
+        0.16
+      ),
+      previewFrameMaterial
+    );
+
+  frameTop.position.set(
+    0,
+    5,
+    -7.8
+  );
+
+  group.add(frameTop);
+
+
+  /* WINDOW FRAME - BOTTOM */
+
+  const frameBottom =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        8.1,
+        0.14,
+        0.16
+      ),
+      previewFrameMaterial
+    );
+
+  frameBottom.position.set(
+    0,
+    1.1,
+    -7.8
+  );
+
+  group.add(frameBottom);
+
+
+  /* WINDOW FRAME - LEFT */
+
+  const frameLeft =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        0.14,
+        4,
+        0.16
+      ),
+      previewFrameMaterial
+    );
+
+  frameLeft.position.set(
+    -4,
+    3.05,
+    -7.8
+  );
+
+  group.add(frameLeft);
+
+
+  /* WINDOW FRAME - RIGHT */
+
+  const frameRight =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        0.14,
+        4,
+        0.16
+      ),
+      previewFrameMaterial
+    );
+
+  frameRight.position.set(
+    4,
+    3.05,
+    -7.8
+  );
+
+  group.add(frameRight);
+
+
+  /* CENTRAL WINDOW DIVIDER */
+
+  const centerFrame =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        0.08,
+        4,
+        0.16
+      ),
+      previewFrameMaterial
+    );
+
+  centerFrame.position.set(
+    0,
+    3.05,
+    -7.78
+  );
+
+  group.add(centerFrame);
+
+
+  /* SIDE LIGHT STRIPS */
+
+  const leftLight =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        0.06,
+        3.8,
+        0.06
+      ),
+      previewBlueLightMaterial
+    );
+
+  leftLight.position.set(
+    -4.15,
+    3.05,
+    -7.65
+  );
+
+  group.add(leftLight);
+
+
+  const rightLight =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        0.06,
+        3.8,
+        0.06
+      ),
+      previewLightMaterial
+    );
+
+  rightLight.position.set(
+    4.15,
+    3.05,
+    -7.65
+  );
+
+  group.add(rightLight);
+
+
+  /* FLOOR LIGHT STRIPS */
+
+  const leftFloorLight =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        0.04,
+        0.04,
+        8.5
+      ),
+      previewBlueLightMaterial
+    );
+
+  leftFloorLight.position.set(
+    -4.65,
+    0.04,
+    -3
+  );
+
+  group.add(leftFloorLight);
+
+
+  const rightFloorLight =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        0.04,
+        0.04,
+        8.5
+      ),
+      previewLightMaterial
+    );
+
+  rightFloorLight.position.set(
+    4.65,
+    0.04,
+    -3
+  );
+
+  group.add(rightFloorLight);
+
+
+  /* CENTRAL CONSOLE */
+
+  const consoleBase =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        2.2,
+        0.65,
+        1.15
+      ),
+      previewFrameMaterial
+    );
+
+  consoleBase.position.set(
+    0,
+    0.35,
+    -1.6
+  );
+
+  group.add(consoleBase);
+
+
+  const consoleTop =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        1.8,
+        0.08,
+        0.8
+      ),
+      previewLightMaterial
+    );
+
+  consoleTop.position.set(
+    0,
+    0.72,
+    -1.6
+  );
+
+  group.add(consoleTop);
+
+
+  /* UPPER LIGHT */
+
+  const upperLight =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        5.2,
+        0.05,
+        0.08
+      ),
+      previewLightMaterial
+    );
+
+  upperLight.position.set(
+    0,
+    5.55,
+    -3.5
+  );
+
+  group.add(upperLight);
+
+
+  return group;
+}
+
+
+/* ---------------------------------------------------------------
+   PREVIEW DISPOSAL
+   --------------------------------------------------------------- */
+
+function disposePreview(group) {
+
+  if (!group) return;
+
+  group.traverse((node) => {
+
+    if (!node.isMesh) return;
+
+    if (node.geometry) {
+      node.geometry.dispose();
+    }
+
+    const materials =
+      Array.isArray(node.material)
+        ? node.material
+        : [node.material];
+
+    materials.forEach((material) => {
+
+      if (material) {
+        material.dispose();
+      }
+
+    });
+
+  });
+}
+
+
+function fadeOutPreview(
+  group,
+  parent,
+  duration = 180
+) {
+
+  if (!group || !parent) return;
+
+  const materials =
+    new Map();
+
+  group.traverse((node) => {
+
+    if (!node.isMesh) return;
+
+    const nodeMaterials =
+      Array.isArray(node.material)
+        ? node.material
+        : [node.material];
+
+    nodeMaterials.forEach((material) => {
+
+      if (!material) return;
+
+      if (!materials.has(material)) {
+
+        materials.set(
+          material,
+          typeof material.opacity === "number"
+            ? material.opacity
+            : 1
+        );
+
+      }
+
+      material.transparent = true;
+      material.depthWrite = false;
+      material.needsUpdate = true;
+
+    });
+
+  });
+
+
+  const startTime =
+    performance.now();
+
+
+  function animateFade(now) {
+
+    const progress =
+      Math.min(
+        (now - startTime) / duration,
+        1
+      );
+
+
+    const eased =
+      1 -
+      Math.pow(
+        1 - progress,
+        3
+      );
+
+
+    materials.forEach(
+      (startOpacity, material) => {
+
+        material.opacity =
+          startOpacity *
+          (1 - eased);
+
+      }
+    );
+
+
+    if (progress < 1) {
+
+      requestAnimationFrame(
+        animateFade
+      );
+
+      return;
+
+    }
+
+
+    parent.remove(
+      group
+    );
+
+    disposePreview(
+      group
+    );
+
+  }
+
+
+  requestAnimationFrame(
+    animateFade
+  );
+
+}
+
+/* ---------------------------------------------------------------
+   SHOW PREVIEW IMMEDIATELY
+   --------------------------------------------------------------- */
+
+roomPreview =
+  createRoomPreview();
+
+roomGroup.add(
+  roomPreview
+);
+
+
+/* ---------------------------------------------------------------
+   REAL ROOM MODEL
+   --------------------------------------------------------------- */
 
 function prepareRoom(model) {
+
   model.traverse((node) => {
+
     if (!node.isMesh) return;
 
     node.castShadow = false;
     node.receiveShadow = false;
 
-    const materials = Array.isArray(node.material)
-      ? node.material
-      : [node.material];
+    const materials =
+      Array.isArray(node.material)
+        ? node.material
+        : [node.material];
 
     materials.forEach((material) => {
+
       if (!material) return;
-      material.side = THREE.FrontSide;
+
+      material.side =
+        THREE.FrontSide;
 
       if (material.color) {
-        // Preserve the model's light architecture while introducing
-        // a very subtle cool-violet cinematic tint.
-        material.color.lerp(new THREE.Color(0xe8e7f3), 0.12);
+
+        material.color.lerp(
+          new THREE.Color(0xe8e7f3),
+          0.12
+        );
+
       }
 
       if ("roughness" in material) {
-        material.roughness = Math.max(0.42, Math.min(material.roughness, 0.82));
+
+        material.roughness =
+          Math.max(
+            0.42,
+            Math.min(
+              material.roughness,
+              0.82
+            )
+          );
+
       }
+
     });
+
   });
 
   return model;
 }
 
+
 loader.load(
+
   "./assets/models/interior-room.glb",
+
   (gltf) => {
-    roomModel = prepareRoom(gltf.scene);
-    roomGroup.add(roomModel);
-    console.log("V3.5 interior room loaded.");
+
+    roomModel =
+      prepareRoom(
+        gltf.scene
+      );
+
+
+    /*
+     * Replace the lightweight
+     * preview with the real room.
+     */
+
+    /* -----------------------------------------
+   Add the real room first
+   ----------------------------------------- */
+
+roomGroup.add(
+  roomModel
+);
+
+
+/* -----------------------------------------
+   Smoothly remove preview
+   ----------------------------------------- */
+
+if (roomPreview) {
+
+  const preview =
+    roomPreview;
+
+  roomPreview =
+    null;
+
+  fadeOutPreview(
+    preview,
+    roomGroup,
+    220
+  );
+
+}
+
+
+    console.log(
+      "V3.5 interior room loaded."
+    );
+
   },
+
   undefined,
+
   (error) => {
-    console.error("interior-room.glb could not be loaded.", error);
+
+    /*
+     * Keep the procedural preview
+     * visible if the GLB fails.
+     */
+
+    console.warn(
+      "interior-room.glb could not be loaded. Preview retained.",
+      error
+    );
+
   }
+
 );
 
 // ---------------------------------------------------------------
 // PLANET OUTSIDE THE WINDOW
 // ---------------------------------------------------------------
 
-const planetGroup = new THREE.Group();
-scene.add(planetGroup);
+const planetGroup =
+  new THREE.Group();
 
-loader.load(
-  "./assets/models/planet.glb",
-  (gltf) => {
-    const planet = gltf.scene;
+scene.add(
+  planetGroup
+);
 
-    const box = new THREE.Box3().setFromObject(planet);
-    const size = new THREE.Vector3();
-    box.getSize(size);
-    const maxDimension = Math.max(size.x, size.y, size.z) || 1;
-    planet.scale.setScalar(1.1 / maxDimension);
+let planetModel = null;
+let planetPreview = null;
 
-    planet.position.set(0.15, 1.58, -3.62);
-    planet.rotation.y = -0.35;
 
-    planet.traverse((node) => {
-      if (!node.isMesh) return;
-      node.renderOrder = -1;
-      if (node.material) {
-        const materials = Array.isArray(node.material)
-          ? node.material
-          : [node.material];
-        materials.forEach((material) => {
-          if (material.color) material.color.lerp(new THREE.Color(0x7c82c8), 0.22);
-        });
-      }
+/* ---------------------------------------------------------------
+   PLANET PREVIEW
+   --------------------------------------------------------------- */
+
+function createPlanetPreview() {
+
+  const group =
+    new THREE.Group();
+
+
+  const planetGeometry =
+    new THREE.SphereGeometry(
+      0.55,
+      32,
+      32
+    );
+
+
+  const planetMaterial =
+    new THREE.MeshStandardMaterial({
+
+      color: 0x7167c7,
+
+      metalness: 0.15,
+
+      roughness: 0.7,
+
+      emissive: 0x241b5f,
+
+      emissiveIntensity: 0.55
+
     });
 
-    planetGroup.add(planet);
-    console.log("V3.5 planet loaded behind the window.");
+
+  const sphere =
+    new THREE.Mesh(
+      planetGeometry,
+      planetMaterial
+    );
+
+
+  group.add(
+    sphere
+  );
+
+
+  /* ATMOSPHERE */
+
+  const atmosphereGeometry =
+    new THREE.SphereGeometry(
+      0.64,
+      32,
+      32
+    );
+
+
+  const atmosphereMaterial =
+    new THREE.MeshBasicMaterial({
+
+      color: 0x8b86ff,
+
+      transparent: true,
+
+      opacity: 0.12,
+
+      side: THREE.BackSide
+
+    });
+
+
+  const atmosphere =
+    new THREE.Mesh(
+      atmosphereGeometry,
+      atmosphereMaterial
+    );
+
+
+  group.add(
+    atmosphere
+  );
+
+
+  return group;
+}
+
+
+/* ---------------------------------------------------------------
+   PLANET PREVIEW — IMMEDIATE
+   --------------------------------------------------------------- */
+
+planetPreview =
+  createPlanetPreview();
+
+
+planetPreview.position.set(
+  0.15,
+  1.58,
+  -3.62
+);
+
+planetPreview.rotation.y =
+  -0.35;
+
+planetGroup.add(
+  planetPreview
+);
+
+
+/* ---------------------------------------------------------------
+   LOAD REAL PLANET
+   --------------------------------------------------------------- */
+
+loader.load(
+
+  "./assets/models/planet.glb",
+
+  (gltf) => {
+
+    planetModel =
+      gltf.scene;
+
+
+    const box =
+      new THREE.Box3().setFromObject(
+        planetModel
+      );
+
+
+    const size =
+      new THREE.Vector3();
+
+
+    box.getSize(
+      size
+    );
+
+
+    const maxDimension =
+      Math.max(
+        size.x,
+        size.y,
+        size.z
+      ) || 1;
+
+
+    planetModel.scale.setScalar(
+      1.1 /
+      maxDimension
+    );
+
+
+    planetModel.position.set(
+      0.15,
+      1.58,
+      -3.62
+    );
+
+
+    planetModel.rotation.y =
+      -0.35;
+
+
+    planetModel.traverse(
+      (node) => {
+
+        if (!node.isMesh) return;
+
+        node.renderOrder =
+          -1;
+
+
+        if (node.material) {
+
+          const materials =
+            Array.isArray(
+              node.material
+            )
+              ? node.material
+              : [node.material];
+
+
+          materials.forEach(
+            (material) => {
+
+              if (
+                material.color
+              ) {
+
+                material.color.lerp(
+                  new THREE.Color(
+                    0x7c82c8
+                  ),
+                  0.22
+                );
+
+              }
+
+            }
+          );
+
+        }
+
+      }
+    );
+
+
+    planetGroup.add(
+  planetModel
+);
+
+
+if (planetPreview) {
+
+  const preview =
+    planetPreview;
+
+  planetPreview =
+    null;
+
+  fadeOutPreview(
+    preview,
+    planetGroup,
+    180
+  );
+
+}
+
+
+    console.log(
+      "V3.5 planet loaded behind the window."
+    );
+
   },
+
   undefined,
-  (error) => console.warn("planet.glb could not be loaded.", error)
+
+  (error) => {
+
+    console.warn(
+      "planet.glb could not be loaded. Preview retained.",
+      error
+    );
+
+  }
+
 );
 
 // ---------------------------------------------------------------

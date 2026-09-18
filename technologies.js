@@ -122,94 +122,379 @@ scene.add(stars);
    CENTRAL PURPLE PLANET
    ========================================================= */
 
+/*
+ * The planet is rendered in two stages:
+ *
+ * 1. Lightweight procedural preview → immediate
+ * 2. Real GLB model → replaces preview when ready
+ *
+ * This prevents the scene from showing empty space
+ * while purple_planet.glb is loading.
+ */
+
 let planet = null;
 
-const gltfLoader = new GLTFLoader();
+
+/* =========================================================
+   PLANET PREVIEW
+   ========================================================= */
+
+function createPlanetPreview() {
+
+    const group =
+        new THREE.Group();
+
+
+    /* -------------------------------------------------------
+       MAIN SURFACE
+       ------------------------------------------------------- */
+
+    const geometry =
+        new THREE.SphereGeometry(
+            1.7,
+            48,
+            48
+        );
+
+
+    const material =
+        new THREE.MeshStandardMaterial({
+
+            color: 0x171329,
+
+            metalness: 0.0,
+
+            roughness: 0.58,
+
+            emissive: 0x180c38,
+
+            emissiveIntensity: 0.18
+
+        });
+
+
+    const surface =
+        new THREE.Mesh(
+            geometry,
+            material
+        );
+
+
+    group.add(surface);
+
+
+    /* -------------------------------------------------------
+       ATMOSPHERIC RIM
+       ------------------------------------------------------- */
+
+    const atmosphereGeometry =
+        new THREE.SphereGeometry(
+            1.74,
+            48,
+            48
+        );
+
+
+    const atmosphereMaterial =
+        new THREE.ShaderMaterial({
+
+            transparent: true,
+
+            depthWrite: false,
+
+            depthTest: true,
+
+            side: THREE.BackSide,
+
+            blending:
+                THREE.AdditiveBlending,
+
+            uniforms: {
+
+                atmosphereColor: {
+                    value:
+                        new THREE.Color(
+                            0x9d8cff
+                        )
+                },
+
+                atmosphereStrength: {
+                    value: 0.22
+                }
+
+            },
+
+            vertexShader: `
+                varying vec3 vWorldPosition;
+                varying vec3 vWorldNormal;
+
+                void main() {
+
+                    vec4 worldPosition =
+                        modelMatrix *
+                        vec4(position, 1.0);
+
+                    vWorldPosition =
+                        worldPosition.xyz;
+
+                    vWorldNormal =
+                        normalize(
+                            mat3(modelMatrix) *
+                            normal
+                        );
+
+                    gl_Position =
+                        projectionMatrix *
+                        viewMatrix *
+                        worldPosition;
+                }
+            `,
+
+            fragmentShader: `
+                uniform vec3 atmosphereColor;
+                uniform float atmosphereStrength;
+
+                varying vec3 vWorldPosition;
+                varying vec3 vWorldNormal;
+
+                void main() {
+
+                    vec3 viewDirection =
+                        normalize(
+                            cameraPosition -
+                            vWorldPosition
+                        );
+
+                    float viewAngle =
+                        abs(
+                            dot(
+                                normalize(
+                                    vWorldNormal
+                                ),
+                                viewDirection
+                            )
+                        );
+
+                    float rim =
+                        pow(
+                            1.0 - viewAngle,
+                            3.5
+                        );
+
+                    float intensity =
+                        rim *
+                        atmosphereStrength;
+
+                    gl_FragColor =
+                        vec4(
+                            atmosphereColor,
+                            intensity
+                        );
+                }
+            `
+
+        });
+
+
+    const atmosphere =
+        new THREE.Mesh(
+            atmosphereGeometry,
+            atmosphereMaterial
+        );
+
+
+    group.add(
+        atmosphere
+    );
+
+
+    /* -------------------------------------------------------
+       SUBTLE RING
+       ------------------------------------------------------- */
+
+    const ringGeometry =
+        new THREE.TorusGeometry(
+            1.78,
+            0.008,
+            12,
+            96
+        );
+
+
+    const ringMaterial =
+        new THREE.MeshBasicMaterial({
+
+            color: 0x8b7cff,
+
+            transparent: true,
+
+            opacity: 0.18,
+
+            depthWrite: false
+
+        });
+
+
+    const ring =
+        new THREE.Mesh(
+            ringGeometry,
+            ringMaterial
+        );
+
+
+    ring.rotation.set(
+        0.45,
+        0.2,
+        0.2
+    );
+
+
+    group.add(
+        ring
+    );
+
+
+    return group;
+}
+
+
+/* =========================================================
+   IMMEDIATE PLANET
+   ========================================================= */
+
+/*
+ * Create and display the lightweight planet immediately.
+ */
+
+planet =
+    createPlanetPreview();
+
+planet.scale.setScalar(
+    0.965
+);
+
+scene.add(
+    planet
+);
+
+
+/* =========================================================
+   REAL PLANET MODEL
+   ========================================================= */
+
+const gltfLoader =
+    new GLTFLoader();
+
 
 gltfLoader.load(
+
     "./assets/models/purple_planet.glb",
+
 
     (gltf) => {
 
-        planet = gltf.scene;
+        const realPlanet =
+            gltf.scene;
 
-        /*
-         * Preserve the original proportions of the GLB.
-         */
-        planet.scale.setScalar(1.64);
 
-        planet.position.set(
+        realPlanet.scale.setScalar(
+            1.64
+        );
+
+
+        realPlanet.position.set(
             0,
             0,
             0
         );
 
-        planet.traverse((object) => {
 
-            if (!object.isMesh) {
-                return;
+        realPlanet.traverse(
+            (object) => {
+
+                if (!object.isMesh) {
+                    return;
+                }
+
+
+                object.castShadow =
+                    false;
+
+                object.receiveShadow =
+                    false;
+
+
+                if (!object.material) {
+                    return;
+                }
+
+
+                /* ------------------------------------------------
+                   PLANET SURFACE
+                   ------------------------------------------------ */
+
+                if (
+                    object.material.name ===
+                        "PurplePlanet" &&
+                    (
+                        object.material
+                            .isMeshStandardMaterial ||
+                        object.material
+                            .isMeshPhysicalMaterial
+                    )
+                ) {
+
+                    object.material.metalness =
+                        0.0;
+
+                    object.material.roughness =
+                        0.58;
+
+                    object.material.emissive.set(
+                        0x180c38
+                    );
+
+                    object.material.emissiveIntensity =
+                        0.18;
+
+                }
+
+
+                /* ------------------------------------------------
+                   CLOUDS
+                   ------------------------------------------------ */
+
+                if (
+                    (
+                        object.material.name ===
+                            "Clouds_0" ||
+                        object.material.name ===
+                            "Clouds_1"
+                    ) &&
+                    (
+                        object.material
+                            .isMeshStandardMaterial ||
+                        object.material
+                            .isMeshPhysicalMaterial
+                    )
+                ) {
+
+                    object.material.emissiveIntensity =
+                        0.22;
+
+                }
+
+
+                object.material.needsUpdate =
+                    true;
+
             }
-
-            object.castShadow = false;
-            object.receiveShadow = false;
-
-            if (!object.material) {
-                return;
-            }
-
-            /*
-             * Planet surface
-             *
-             * Reduce the baked emissive contribution from
-             * the original GLB so directional lighting can
-             * create stronger volume and shading.
-             */
-            if (
-                object.material.name === "PurplePlanet" &&
-                (
-                    object.material.isMeshStandardMaterial ||
-                    object.material.isMeshPhysicalMaterial
-                )
-            ) {
-
-                object.material.metalness = 0.0;
-                object.material.roughness = 0.58;
-
-                object.material.emissive.set(
-                    0x180c38
-                );
-
-                object.material.emissiveIntensity = 0.18;
-            }
-
-            /*
-             * Clouds
-             *
-             * Keep the original textures and transparency,
-             * but slightly reduce their emissive contribution
-             * so they integrate better with the surface.
-             */
-            if (
-                (
-                    object.material.name === "Clouds_0" ||
-                    object.material.name === "Clouds_1"
-                ) &&
-                (
-                    object.material.isMeshStandardMaterial ||
-                    object.material.isMeshPhysicalMaterial
-                )
-            ) {
-
-                object.material.emissiveIntensity = 0.22;
-            }
-
-            object.material.needsUpdate = true;
-        });
+        );
 
 
-        /* =====================================================
-           ATMOSPHERIC RIM
-           ===================================================== */
+        /* -------------------------------------------------------
+           REAL PLANET ATMOSPHERE
+           ------------------------------------------------------- */
 
         const atmosphereGeometry =
             new THREE.SphereGeometry(
@@ -217,6 +502,7 @@ gltfLoader.load(
                 64,
                 64
             );
+
 
         const atmosphereMaterial =
             new THREE.ShaderMaterial({
@@ -233,14 +519,18 @@ gltfLoader.load(
                     THREE.AdditiveBlending,
 
                 uniforms: {
+
                     atmosphereColor: {
                         value:
-                            new THREE.Color(0x9d8cff)
+                            new THREE.Color(
+                                0x9d8cff
+                            )
                     },
 
                     atmosphereStrength: {
                         value: 0.22
                     }
+
                 },
 
                 vertexShader: `
@@ -250,14 +540,16 @@ gltfLoader.load(
                     void main() {
 
                         vec4 worldPosition =
-                            modelMatrix * vec4(position, 1.0);
+                            modelMatrix *
+                            vec4(position, 1.0);
 
                         vWorldPosition =
                             worldPosition.xyz;
 
                         vWorldNormal =
                             normalize(
-                                mat3(modelMatrix) * normal
+                                mat3(modelMatrix) *
+                                normal
                             );
 
                         gl_Position =
@@ -285,7 +577,9 @@ gltfLoader.load(
                         float viewAngle =
                             abs(
                                 dot(
-                                    normalize(vWorldNormal),
+                                    normalize(
+                                        vWorldNormal
+                                    ),
                                     viewDirection
                                 )
                             );
@@ -307,6 +601,7 @@ gltfLoader.load(
                             );
                     }
                 `
+
             });
 
 
@@ -316,56 +611,115 @@ gltfLoader.load(
                 atmosphereMaterial
             );
 
-        /*
-         * Slightly larger than the planet so the rim
-         * remains visible around the silhouette.
-         */
-        atmosphere.scale.setScalar(1.025);
 
-        planet.add(atmosphere);
+        atmosphere.scale.setScalar(
+            1.025
+        );
 
 
-        scene.add(planet);
+        realPlanet.add(
+            atmosphere
+        );
+
+
+        /* -------------------------------------------------------
+           SWAP PREVIEW → REAL MODEL
+           ------------------------------------------------------- */
+
+        scene.remove(
+            planet
+        );
+
+
+        disposePlanetPreview(
+            planet
+        );
+
+
+        planet =
+            realPlanet;
+
+
+        scene.add(
+            planet
+        );
+
     },
+
 
     undefined,
 
+
     (error) => {
 
-        console.error(
-            "Unable to load Purple Planet model.",
+        /*
+         * Keep the preview planet.
+         *
+         * The user already sees a complete planet,
+         * so a GLB failure is visually harmless.
+         */
+
+        console.warn(
+            "Unable to load Purple Planet model. Keeping preview.",
             error
         );
 
-        /*
-         * Graceful fallback if the GLB is unavailable.
-         */
-        const fallbackGeometry =
-            new THREE.SphereGeometry(
-                1.7,
-                64,
-                64
-            );
-
-        const fallbackMaterial =
-            new THREE.MeshStandardMaterial({
-                color: 0x171329,
-                metalness: 0.0,
-                roughness: 0.58,
-                emissive: 0x180c38,
-                emissiveIntensity: 0.18
-            });
-
-        planet =
-            new THREE.Mesh(
-                fallbackGeometry,
-                fallbackMaterial
-            );
-
-        scene.add(planet);
     }
+
 );
 
+
+/* =========================================================
+   PREVIEW CLEANUP
+   ========================================================= */
+
+function disposePlanetPreview(
+    object
+) {
+
+    if (!object) {
+        return;
+    }
+
+
+    object.traverse(
+        (child) => {
+
+            if (child.geometry) {
+                child.geometry.dispose();
+            }
+
+
+            if (child.material) {
+
+                const materials =
+                    Array.isArray(
+                        child.material
+                    )
+                        ? child.material
+                        : [child.material];
+
+
+                materials.forEach(
+                    (material) => {
+
+                        if (
+                            material.map
+                        ) {
+                            material.map.dispose();
+                        }
+
+                        material.dispose();
+
+                    }
+                );
+
+            }
+
+        }
+    );
+
+}
 
 /* =========================================================
    ORBITAL SYSTEM

@@ -74,25 +74,559 @@ container.appendChild(
    BRIDGE
    ========================================================= */
 
-const loader =
-  new GLTFLoader();
+/*
+ * The bridge is rendered in two stages:
+ *
+ * 1. Lightweight procedural preview → immediate
+ * 2. Real GLB model → replaces preview when ready
+ *
+ * This keeps the main visual element visible while
+ * about-bridge.glb is loading.
+ */
 
 let bridge = null;
 
 
+/* =========================================================
+   BRIDGE PREVIEW
+   ========================================================= */
+
+function createBridgePreview() {
+
+  const group =
+    new THREE.Group();
+
+
+  /* -------------------------------------------------------
+     MATERIALS
+     ------------------------------------------------------- */
+
+  const darkMaterial =
+    new THREE.MeshStandardMaterial({
+
+      color: 0x101016,
+
+      metalness: 0.48,
+
+      roughness: 0.42
+
+    });
+
+
+  const floorMaterial =
+    new THREE.MeshStandardMaterial({
+
+      color: 0x09090d,
+
+      metalness: 0.50,
+
+      roughness: 0.34
+
+    });
+
+
+  const purpleScreenMaterial =
+    new THREE.MeshStandardMaterial({
+
+      color: 0x7c72ff,
+
+      emissive: 0x5345cc,
+
+      emissiveIntensity: 1.0,
+
+      metalness: 0.05,
+
+      roughness: 0.28
+
+    });
+
+
+  const blueLightMaterial =
+    new THREE.MeshBasicMaterial({
+
+      color: 0x6ed6ff
+
+    });
+
+
+  const purpleLightMaterial =
+    new THREE.MeshBasicMaterial({
+
+      color: 0x9d8cff
+
+    });
+
+
+  /* -------------------------------------------------------
+     FLOOR
+     ------------------------------------------------------- */
+
+  const floor =
+    new THREE.Mesh(
+
+      new THREE.BoxGeometry(
+        5.8,
+        0.18,
+        4.2
+      ),
+
+      floorMaterial
+
+    );
+
+  floor.position.set(
+    0,
+    -1.05,
+    0
+  );
+
+  group.add(
+    floor
+  );
+
+
+  /* -------------------------------------------------------
+     BACK WALL
+     ------------------------------------------------------- */
+
+  const backWall =
+    new THREE.Mesh(
+
+      new THREE.BoxGeometry(
+        5.8,
+        3.2,
+        0.16
+      ),
+
+      darkMaterial
+
+    );
+
+  backWall.position.set(
+    0,
+    0.55,
+    -1.95
+  );
+
+  group.add(
+    backWall
+  );
+
+
+  /* -------------------------------------------------------
+     SIDE WALLS
+     ------------------------------------------------------- */
+
+  const leftWall =
+    new THREE.Mesh(
+
+      new THREE.BoxGeometry(
+        0.16,
+        3.2,
+        4.2
+      ),
+
+      darkMaterial
+
+    );
+
+  leftWall.position.set(
+    -2.82,
+    0.55,
+    0
+  );
+
+  group.add(
+    leftWall
+  );
+
+
+  const rightWall =
+    new THREE.Mesh(
+
+      new THREE.BoxGeometry(
+        0.16,
+        3.2,
+        4.2
+      ),
+
+      darkMaterial
+
+    );
+
+  rightWall.position.set(
+    2.82,
+    0.55,
+    0
+  );
+
+  group.add(
+    rightWall
+  );
+
+
+  /* -------------------------------------------------------
+     CONTROL SCREENS
+     ------------------------------------------------------- */
+
+  const screenPositions = [
+    -1.85,
+    -0.95,
+    0,
+    0.95,
+    1.85
+  ];
+
+
+  screenPositions.forEach(
+    (x) => {
+
+      const screen =
+        new THREE.Mesh(
+
+          new THREE.BoxGeometry(
+            0.62,
+            1.05,
+            0.08
+          ),
+
+          purpleScreenMaterial
+
+        );
+
+
+      screen.position.set(
+        x,
+        0.55,
+        -1.83
+      );
+
+
+      group.add(
+        screen
+      );
+
+    }
+  );
+
+
+  /* -------------------------------------------------------
+     CONTROL DESK
+     ------------------------------------------------------- */
+
+  const desk =
+    new THREE.Mesh(
+
+      new THREE.BoxGeometry(
+        4.2,
+        0.34,
+        0.85
+      ),
+
+      darkMaterial
+
+    );
+
+  desk.position.set(
+    0,
+    -0.22,
+    -0.72
+  );
+
+  group.add(
+    desk
+  );
+
+
+  /* -------------------------------------------------------
+     DESK EDGE LIGHT
+     ------------------------------------------------------- */
+
+  const deskLight =
+    new THREE.Mesh(
+
+      new THREE.BoxGeometry(
+        3.9,
+        0.035,
+        0.04
+      ),
+
+      blueLightMaterial
+
+    );
+
+  deskLight.position.set(
+    0,
+    -0.03,
+    -1.15
+  );
+
+  group.add(
+    deskLight
+  );
+
+
+  /* -------------------------------------------------------
+     CENTRAL CONSOLE
+     ------------------------------------------------------- */
+
+  const console =
+    new THREE.Mesh(
+
+      new THREE.BoxGeometry(
+        1.25,
+        0.48,
+        0.58
+      ),
+
+      darkMaterial
+
+    );
+
+  console.position.set(
+    0,
+    0.16,
+    -0.55
+  );
+
+  group.add(
+    console
+  );
+
+
+  const consoleScreen =
+    new THREE.Mesh(
+
+      new THREE.BoxGeometry(
+        0.72,
+        0.34,
+        0.04
+      ),
+
+      purpleScreenMaterial
+
+    );
+
+  consoleScreen.position.set(
+    0,
+    0.40,
+    -0.86
+  );
+
+  group.add(
+    consoleScreen
+  );
+
+
+  /* -------------------------------------------------------
+     CENTRAL CHAIR
+     ------------------------------------------------------- */
+
+  const chairSeat =
+    new THREE.Mesh(
+
+      new THREE.BoxGeometry(
+        0.82,
+        0.18,
+        0.72
+      ),
+
+      darkMaterial
+
+    );
+
+  chairSeat.position.set(
+    0,
+    -0.45,
+    0.05
+  );
+
+  group.add(
+    chairSeat
+  );
+
+
+  const chairBack =
+    new THREE.Mesh(
+
+      new THREE.BoxGeometry(
+        0.82,
+        0.95,
+        0.18
+      ),
+
+      darkMaterial
+
+    );
+
+  chairBack.position.set(
+    0,
+    0.02,
+    0.36
+  );
+
+  group.add(
+    chairBack
+  );
+
+
+  /* -------------------------------------------------------
+     UPPER FRAME
+     ------------------------------------------------------- */
+
+  const topBeam =
+    new THREE.Mesh(
+
+      new THREE.BoxGeometry(
+        5.6,
+        0.13,
+        0.13
+      ),
+
+      darkMaterial
+
+    );
+
+  topBeam.position.set(
+    0,
+    2.05,
+    -1.72
+  );
+
+  group.add(
+    topBeam
+  );
+
+
+  /* -------------------------------------------------------
+     PURPLE TOP LIGHT
+     ------------------------------------------------------- */
+
+  const topLight =
+    new THREE.Mesh(
+
+      new THREE.BoxGeometry(
+        3.6,
+        0.025,
+        0.06
+      ),
+
+      purpleLightMaterial
+
+    );
+
+  topLight.position.set(
+    0,
+    1.95,
+    -1.78
+  );
+
+  group.add(
+    topLight
+  );
+
+
+  /* -------------------------------------------------------
+     SIDE LIGHT STRIPS
+     ------------------------------------------------------- */
+
+  const sideLightLeft =
+    new THREE.Mesh(
+
+      new THREE.BoxGeometry(
+        0.04,
+        2.2,
+        0.05
+      ),
+
+      blueLightMaterial
+
+    );
+
+  sideLightLeft.position.set(
+    -2.72,
+    0.65,
+    -1.72
+  );
+
+  group.add(
+    sideLightLeft
+  );
+
+
+  const sideLightRight =
+    sideLightLeft.clone();
+
+
+  sideLightRight.position.x =
+    2.72;
+
+  group.add(
+    sideLightRight
+  );
+
+
+  return group;
+}
+
+
+/* =========================================================
+   IMMEDIATE PREVIEW
+   ========================================================= */
+
+const bridgePreview =
+  createBridgePreview();
+
+
+/*
+ * Use the same placement as the real GLB.
+ */
+
+bridgePreview.position.set(
+  0,
+  window.innerWidth <= 560
+    ? -2.8
+    : -1.8,
+  window.innerWidth <= 560
+    ? -8
+    : -5
+);
+
+
+bridgePreview.scale.setScalar(
+  1
+);
+
+
+scene.add(
+  bridgePreview
+);
+
+
+/* =========================================================
+   REAL BRIDGE MODEL
+   ========================================================= */
+
+const loader =
+  new GLTFLoader();
+
+
 loader.load(
+
   "./assets/models/about-bridge.glb",
+
 
   (gltf) => {
 
-    bridge = gltf.scene;
+    const realBridge =
+      gltf.scene;
 
 
     /* -------------------------------------------------------
        MATERIAL CUSTOMIZATION
        ------------------------------------------------------- */
 
-    bridge.traverse(
+    realBridge.traverse(
       (object) => {
 
         if (!object.isMesh) {
@@ -113,15 +647,20 @@ loader.load(
            WALLS
            --------------------------------------------------- */
 
-        if (material.name === "Walls") {
+        if (
+          material.name ===
+          "Walls"
+        ) {
 
           material.color.set(
             0x17151f
           );
 
-          material.metalness = 0.48;
+          material.metalness =
+            0.48;
 
-          material.roughness = 0.42;
+          material.roughness =
+            0.42;
         }
 
 
@@ -130,16 +669,19 @@ loader.load(
            --------------------------------------------------- */
 
         else if (
-          material.name === "Floor"
+          material.name ===
+          "Floor"
         ) {
 
           material.color.set(
             0x0b0b10
           );
 
-          material.metalness = 0.50;
+          material.metalness =
+            0.50;
 
-          material.roughness = 0.32;
+          material.roughness =
+            0.32;
         }
 
 
@@ -148,7 +690,8 @@ loader.load(
            --------------------------------------------------- */
 
         else if (
-          material.name === "ScreensOutside"
+          material.name ===
+          "ScreensOutside"
         ) {
 
           material.color.set(
@@ -169,7 +712,8 @@ loader.load(
            --------------------------------------------------- */
 
         else if (
-          material.name === "Screens"
+          material.name ===
+          "Screens"
         ) {
 
           material.color.set(
@@ -190,7 +734,8 @@ loader.load(
            --------------------------------------------------- */
 
         else if (
-          material.name === "Chair"
+          material.name ===
+          "Chair"
         ) {
 
           material.color.set(
@@ -210,7 +755,8 @@ loader.load(
            --------------------------------------------------- */
 
         else if (
-          material.name === "Seat"
+          material.name ===
+          "Seat"
         ) {
 
           material.color.set(
@@ -231,7 +777,8 @@ loader.load(
            --------------------------------------------------- */
 
         else if (
-          material.name === "SidesLighting"
+          material.name ===
+          "SidesLighting"
         ) {
 
           material.color.set(
@@ -252,7 +799,8 @@ loader.load(
            --------------------------------------------------- */
 
         else if (
-          material.name === "Window"
+          material.name ===
+          "Window"
         ) {
 
           material.color.set(
@@ -272,9 +820,12 @@ loader.load(
            --------------------------------------------------- */
 
         else if (
-          material.name === "Black" ||
-          material.name === "FloorMiddle" ||
-          material.name === "TrimRoof"
+          material.name ===
+            "Black" ||
+          material.name ===
+            "FloorMiddle" ||
+          material.name ===
+            "TrimRoof"
         ) {
 
           material.color.set(
@@ -285,6 +836,7 @@ loader.load(
 
         material.needsUpdate =
           true;
+
       }
     );
 
@@ -293,40 +845,117 @@ loader.load(
        POSITION
        ------------------------------------------------------- */
 
-   const isMobile = window.innerWidth <= 560;
+    const isMobile =
+      window.innerWidth <= 560;
 
-bridge.position.set(
-  0,
-  isMobile ? -2.8 : -1.8,
-  isMobile ? -8 : -5
-);
+
+    realBridge.position.set(
+      0,
+      isMobile ? -2.8 : -1.8,
+      isMobile ? -8 : -5
+    );
 
 
     /* -------------------------------------------------------
        SCALE
        ------------------------------------------------------- */
 
-    bridge.scale.setScalar(
+    realBridge.scale.setScalar(
       1
     );
+
+
+    /* -------------------------------------------------------
+       SWAP PREVIEW → REAL
+       ------------------------------------------------------- */
+
+    scene.remove(
+      bridgePreview
+    );
+
+
+    disposeBridgePreview(
+      bridgePreview
+    );
+
+
+    bridge =
+      realBridge;
 
 
     scene.add(
       bridge
     );
+
   },
+
 
   undefined,
 
+
   (error) => {
 
-    console.error(
-      "Unable to load About bridge.",
+    /*
+     * Keep the preview if the GLB fails.
+     */
+
+    console.warn(
+      "Unable to load About bridge. Keeping preview.",
       error
     );
+
   }
+
 );
 
+
+/* =========================================================
+   PREVIEW CLEANUP
+   ========================================================= */
+
+function disposeBridgePreview(
+  object
+) {
+
+  if (!object) {
+    return;
+  }
+
+
+  object.traverse(
+    (child) => {
+
+      if (child.geometry) {
+        child.geometry.dispose();
+      }
+
+
+      if (child.material) {
+
+        const materials =
+          Array.isArray(
+            child.material
+          )
+            ? child.material
+            : [
+                child.material
+              ];
+
+
+        materials.forEach(
+          (material) => {
+
+            material.dispose();
+
+          }
+        );
+
+      }
+
+    }
+  );
+
+}
 
 /* =========================================================
    LIGHTING

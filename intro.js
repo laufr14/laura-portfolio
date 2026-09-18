@@ -5,6 +5,25 @@ const intro = document.querySelector("#intro");
 const container = document.querySelector("#intro-webgl");
 const skipButton = document.querySelector("#skip-intro");
 
+let mainSceneLoaded = false;
+
+async function loadMainScene() {
+  if (mainSceneLoaded) {
+    return;
+  }
+
+  mainSceneLoaded = true;
+
+  try {
+    await import("./main.js");
+  } catch (error) {
+    console.error(
+      "Unable to load the Home 3D scene.",
+      error
+    );
+  }
+}
+
 if (!intro || !container) {
   console.warn("Intro elements not found.");
 } else {
@@ -31,10 +50,13 @@ if (!intro || !container) {
 
   const shouldShow = !introAlreadySeen && !reducedMotion;
 
-  if (!shouldShow) {
-    // Intro has already been seen or reduced motion is enabled.
-    intro.remove();
-  } else {
+if (!shouldShow) {
+  // Intro has already been seen or reduced motion is enabled.
+  intro.remove();
+
+  // Load Home immediately.
+  loadMainScene();
+} else {
     // Mark the intro as seen immediately when it starts.
     //
     // This is important for navigation:
@@ -189,20 +211,25 @@ function initIntro() {
   let finishTimer;
 
   function finishIntro() {
-    if (finished) return;
-
-    finished = true;
-
-    clearTimeout(finishTimer);
-    cancelAnimationFrame(animationFrame);
-
-    intro.classList.add("is-exiting");
-
-    // Remove the overlay after the CSS fade completes.
-    setTimeout(() => {
-      intro.remove();
-    }, 720);
+  if (finished) {
+    return;
   }
+
+  finished = true;
+
+  clearTimeout(finishTimer);
+  cancelAnimationFrame(animationFrame);
+
+  intro.classList.add("is-exiting");
+
+  // Wait for the visual fade-out to finish,
+  // then remove the intro and load Home.
+  setTimeout(async () => {
+    intro.remove();
+
+    await loadMainScene();
+  }, 720);
+}
 
   // ---------------------------------------------------------------
   // SKIP

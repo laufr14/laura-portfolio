@@ -35,6 +35,33 @@ renderer.toneMappingExposure = 1.12;
 container.appendChild(renderer.domElement);
 
 // ---------------------------------------------------------------
+// FIRST-FRAME HANDOFF
+// Keep the 3D layer visually hidden until WebGL has rendered
+// its first stable frame. This prevents the background -> 3D flash
+// on Home and Projects.
+// ---------------------------------------------------------------
+
+let main3DReady = false;
+
+container.style.opacity = "0";
+container.style.visibility = "visible";
+container.style.transition = "opacity 0.16s ease";
+container.style.willChange = "opacity";
+
+function revealMain3D() {
+  if (main3DReady) {
+    return;
+  }
+
+  main3DReady = true;
+  container.style.opacity = "1";
+
+  window.dispatchEvent(
+    new CustomEvent("main3d-ready")
+  );
+}
+
+// ---------------------------------------------------------------
 // LIGHTING
 // ---------------------------------------------------------------
 
@@ -1120,6 +1147,11 @@ camera.position.y +=
   blueLight.intensity = 4.0 + Math.cos(elapsed * 0.42) * 0.35;
 
   renderer.render(scene, camera);
+
+  // Reveal the environment only after the first real WebGL frame.
+  if (!main3DReady) {
+    revealMain3D();
+  }
 }
 
 function resize() {

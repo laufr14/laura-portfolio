@@ -5,23 +5,59 @@ const intro = document.querySelector("#intro");
 const container = document.querySelector("#intro-webgl");
 const skipButton = document.querySelector("#skip-intro");
 
-let mainSceneLoaded = false;
+let mainSceneLoadPromise = null;
 
-async function loadMainScene() {
-  if (mainSceneLoaded) {
-    return;
+function loadMainScene() {
+  if (mainSceneLoadPromise) {
+    return mainSceneLoadPromise;
   }
 
-  mainSceneLoaded = true;
+  mainSceneLoadPromise = new Promise((resolve) => {
+    let settled = false;
 
-  try {
-    await import("./main.js");
-  } catch (error) {
-    console.error(
-      "Unable to load the Home 3D scene.",
-      error
+    const finish = () => {
+      if (settled) {
+        return;
+      }
+
+      settled = true;
+      window.removeEventListener(
+        "main3d-ready",
+        finish
+      );
+      resolve();
+    };
+
+    // main.js resolves this when its first stable WebGL frame
+    // has actually been rendered and revealed.
+    window.addEventListener(
+      "main3d-ready",
+      finish,
+      { once: true }
     );
-  }
+
+    import("./main.js")
+      .then(() => {
+        // Safety fallback in case the scene was already initialized
+        // before the listener above could observe the event.
+        if (document.querySelector("#webgl canvas")) {
+          requestAnimationFrame(() => {
+            finish();
+          });
+        }
+      })
+      .catch((error) => {
+        console.error(
+          "Unable to load the Home 3D scene.",
+          error
+        );
+
+        // Never trap the user on the intro if Home fails to boot.
+        finish();
+      });
+  });
+
+  return mainSceneLoadPromise;
 }
 
 if (!intro || !container) {
@@ -211,25 +247,27 @@ function initIntro() {
   let finishTimer;
 
   function finishIntro() {
-  if (finished) {
-    return;
+    if (finished) {
+      return;
+    }
+
+    finished = true;
+
+    clearTimeout(finishTimer);
+    cancelAnimationFrame(animationFrame);
+
+    // Start Home 3D while the intro is still covering the viewport.
+    // main.js stays visually hidden until its first stable WebGL frame.
+    const mainScenePromise = loadMainScene();
+
+    intro.classList.add("is-exiting");
+
+    // Keep the intro as the visual bridge until Home 3D is ready.
+    setTimeout(async () => {
+      await mainScenePromise;
+      intro.remove();
+    }, 720);
   }
-
-  finished = true;
-
-  clearTimeout(finishTimer);
-  cancelAnimationFrame(animationFrame);
-
-  intro.classList.add("is-exiting");
-
-  // Wait for the visual fade-out to finish,
-  // then remove the intro and load Home.
-  setTimeout(async () => {
-    intro.remove();
-
-    await loadMainScene();
-  }, 720);
-}
 
   // ---------------------------------------------------------------
   // SKIP

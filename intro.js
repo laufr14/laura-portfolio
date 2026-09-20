@@ -28,33 +28,27 @@ function loadMainScene() {
       resolve();
     };
 
-    // main.js resolves this when its first stable WebGL frame
-    // has actually been rendered and revealed.
-    window.addEventListener(
-      "main3d-ready",
-      finish,
-      { once: true }
-    );
+    // main.js resolves this only after its first WebGL frame
+    // has actually been rendered and the canvas has been revealed.
+    if (window.__main3DReady) {
+      finish();
+    } else {
+      window.addEventListener(
+        "main3d-ready",
+        finish,
+        { once: true }
+      );
+    }
 
-    import("./main.js")
-      .then(() => {
-        // Safety fallback in case the scene was already initialized
-        // before the listener above could observe the event.
-        if (document.querySelector("#webgl canvas")) {
-          requestAnimationFrame(() => {
-            finish();
-          });
-        }
-      })
-      .catch((error) => {
-        console.error(
-          "Unable to load the Home 3D scene.",
-          error
-        );
+    import("./main.js").catch((error) => {
+      console.error(
+        "Unable to load the Home 3D scene.",
+        error
+      );
 
-        // Never trap the user on the intro if Home fails to boot.
-        finish();
-      });
+      // Never trap the user on the intro if Home fails to boot.
+      finish();
+    });
   });
 
   return mainSceneLoadPromise;
@@ -88,10 +82,18 @@ if (!intro || !container) {
 
 if (!shouldShow) {
   // Intro has already been seen or reduced motion is enabled.
-  intro.remove();
+  // Keep a dark, non-interactive cover in place until the Home 3D
+  // layer is ready. This closes the body/background -> WebGL gap.
+  intro.classList.add("is-active");
+  intro.setAttribute("aria-hidden", "true");
+  intro.style.pointerEvents = "none";
+  intro.style.transition = "none";
+  intro.querySelector(".intro-label")?.setAttribute("hidden", "true");
+  skipButton?.setAttribute("hidden", "true");
 
-  // Load Home immediately.
-  loadMainScene();
+  loadMainScene().then(() => {
+    intro.remove();
+  });
 } else {
     // Mark the intro as seen immediately when it starts.
     //
@@ -119,7 +121,6 @@ function initIntro() {
   // ---------------------------------------------------------------
 
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x02040a);
 
   const camera = new THREE.PerspectiveCamera(
     45,
@@ -132,9 +133,11 @@ function initIntro() {
 
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
-    alpha: false,
+    alpha: true,
     powerPreference: "high-performance"
   });
+
+  renderer.setClearColor(0x000000, 0);
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -143,6 +146,23 @@ function initIntro() {
   renderer.toneMappingExposure = 1.05;
 
   container.appendChild(renderer.domElement);
+  renderer.domElement.style.opacity = "0";
+  renderer.domElement.style.visibility = "visible";
+  renderer.domElement.style.transition = "opacity 0.12s ease";
+
+  let planetReady = false;
+  let spaceshipReady = false;
+  let introAnimationStarted = false;
+
+  const maybeStartIntro = () => {
+    if (finished || introAnimationStarted || !planetReady || !spaceshipReady) {
+      return;
+    }
+
+    introAnimationStarted = true;
+    renderer.domElement.style.opacity = "1";
+    animationFrame = requestAnimationFrame(animate);
+  };
 
   // ---------------------------------------------------------------
   // UNIVERSE
@@ -211,6 +231,11 @@ function initIntro() {
     modelAtmosphere.scale.copy(model.scale);
 
     scene.add(modelAtmosphere);
+    planetReady = true;
+    maybeStartIntro();
+  }, () => {
+    planetReady = true;
+    maybeStartIntro();
   });
 
   // ---------------------------------------------------------------
@@ -233,6 +258,12 @@ function initIntro() {
       spaceship = model;
 
       spaceshipGroup.add(spaceship);
+      spaceshipReady = true;
+      maybeStartIntro();
+    },
+    () => {
+      spaceshipReady = true;
+      maybeStartIntro();
     }
   );
 
@@ -246,7 +277,7 @@ function initIntro() {
   let animationFrame;
   let finishTimer;
 
-  function finishIntro() {
+  async function finishIntro() {
     if (finished) {
       return;
     }
@@ -256,15 +287,14 @@ function initIntro() {
     clearTimeout(finishTimer);
     cancelAnimationFrame(animationFrame);
 
-    // Start Home 3D while the intro is still covering the viewport.
-    // main.js stays visually hidden until its first stable WebGL frame.
+    // Start Home 3D while the intro is still fully covering the viewport.
+    // Do not begin the fade until the first WebGL frame is actually ready.
     const mainScenePromise = loadMainScene();
+    await mainScenePromise;
 
     intro.classList.add("is-exiting");
 
-    // Keep the intro as the visual bridge until Home 3D is ready.
-    setTimeout(async () => {
-      await mainScenePromise;
+    setTimeout(() => {
       intro.remove();
     }, 720);
   }
@@ -416,10 +446,7 @@ function initIntro() {
     }
   );
 
-  animationFrame =
-    requestAnimationFrame(
-      animate
-    );
+  maybeStartIntro();
 }
 
 // ---------------------------------------------------------------
@@ -498,7 +525,7 @@ function createStars() {
 // PLANET LOADER
 // ---------------------------------------------------------------
 
-function loadPlanet(onLoaded) {
+function loadPlanet(onLoaded, onError) {
   const loader =
     new GLTFLoader();
 
@@ -565,6 +592,7 @@ function loadPlanet(onLoaded) {
         "No planet.glb found — using the procedural planet.",
         error
       );
+      onError?.(error);
     }
   );
 }
@@ -741,7 +769,8 @@ function createFallbackShip() {
 
 function loadSpaceship(
   parent,
-  onLoaded
+  onLoaded,
+  onError
 ) {
   const loader =
     new GLTFLoader();
@@ -804,9 +833,11 @@ function loadSpaceship(
 
     undefined,
 
-    () =>
+    (error) => {
       console.log(
         "No spaceship.glb found — using the lightweight fallback ship."
-      )
+      );
+      onError?.(error);
+    }
   );
 }

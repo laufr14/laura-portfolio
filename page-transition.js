@@ -30,6 +30,13 @@ if (!pageTransition) {
 
   function enterPage() {
 
+    if (
+      pageTransition.dataset.waitFor3d === "true" &&
+      !window.__main3DReady
+    ) {
+      return;
+    }
+
     pageTransition.classList.remove(
       "is-active"
     );
@@ -210,6 +217,18 @@ if (!pageTransition) {
     }
   );
 
+
+  if (pageTransition.dataset.waitFor3d === "true") {
+    if (window.__main3DReady) {
+      enterPage();
+    } else {
+      window.addEventListener(
+        "main3d-ready",
+        enterPage,
+        { once: true }
+      );
+    }
+  }
 
   /* -------------------------------------------------------
      INITIAL PAGE ENTRY

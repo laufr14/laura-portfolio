@@ -21,9 +21,6 @@ if (!container) {
 const scene =
   new THREE.Scene();
 
-scene.background =
-  new THREE.Color(0x060708);
-
 
 /* =========================================================
    CAMERA
@@ -53,8 +50,11 @@ camera.position.set(
 const renderer =
   new THREE.WebGLRenderer({
     antialias: true,
-    alpha: false
+    alpha: true,
+    powerPreference: "high-performance"
   });
+
+renderer.setClearColor(0x000000, 0);
 
 renderer.setPixelRatio(
   Math.min(window.devicePixelRatio, 2)
@@ -68,6 +68,36 @@ renderer.setSize(
 container.appendChild(
   renderer.domElement
 );
+
+
+/* =========================================================
+   SCENE READY GATE
+   ========================================================= */
+
+let sceneReady = false;
+
+function markSceneReady() {
+
+  if (sceneReady) {
+    return;
+  }
+
+  sceneReady = true;
+
+  renderer.render(
+    scene,
+    camera
+  );
+
+  document.body.classList.remove(
+    "scene-loading"
+  );
+
+  document.body.classList.add(
+    "scene-ready"
+  );
+
+}
 
 
 /* =========================================================
@@ -579,7 +609,7 @@ const bridgePreview =
 
 
 /*
- * Use the same placement as the real GLB.
+ * Keep the fallback ready, but do not render it before the real GLB.
  */
 
 bridgePreview.position.set(
@@ -595,11 +625,6 @@ bridgePreview.position.set(
 
 bridgePreview.scale.setScalar(
   1
-);
-
-
-scene.add(
-  bridgePreview
 );
 
 
@@ -866,18 +891,8 @@ loader.load(
 
 
     /* -------------------------------------------------------
-       SWAP PREVIEW → REAL
+       SHOW REAL BRIDGE
        ------------------------------------------------------- */
-
-    scene.remove(
-      bridgePreview
-    );
-
-
-    disposeBridgePreview(
-      bridgePreview
-    );
-
 
     bridge =
       realBridge;
@@ -886,6 +901,9 @@ loader.load(
     scene.add(
       bridge
     );
+
+
+    markSceneReady();
 
   },
 
@@ -900,9 +918,18 @@ loader.load(
      */
 
     console.warn(
-      "Unable to load About bridge. Keeping preview.",
+      "Unable to load About bridge. Showing fallback preview.",
       error
     );
+
+    bridge =
+      bridgePreview;
+
+    scene.add(
+      bridgePreview
+    );
+
+    markSceneReady();
 
   }
 
@@ -1047,6 +1074,10 @@ function animate() {
   requestAnimationFrame(
     animate
   );
+
+  if (!sceneReady) {
+    return;
+  }
 
 const delta =
   clock.getDelta();

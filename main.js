@@ -10,7 +10,6 @@ if (!container) throw new Error("#webgl not found");
 // ---------------------------------------------------------------
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x05070d);
 
 const camera = new THREE.PerspectiveCamera(
   50,
@@ -24,9 +23,10 @@ camera.position.set(-0.05, 1.32, 1.45);
 
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
-  alpha: false,
+  alpha: true,
   powerPreference: "high-performance"
 });
+renderer.setClearColor(0x000000, 0);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -43,10 +43,19 @@ container.appendChild(renderer.domElement);
 
 let main3DReady = false;
 
-container.style.opacity = "0";
+// Keep the full-screen layer itself opaque so the page background/ambient
+// elements can never flash through while WebGL is booting. Only the canvas
+// is faded in after the first rendered frame.
+container.style.opacity = "1";
 container.style.visibility = "visible";
-container.style.transition = "opacity 0.16s ease";
-container.style.willChange = "opacity";
+container.style.background = "transparent";
+container.style.zIndex = "0";
+container.style.isolation = "isolate";
+
+renderer.domElement.style.opacity = "0";
+renderer.domElement.style.visibility = "visible";
+renderer.domElement.style.transition = "opacity 0.16s ease";
+renderer.domElement.style.willChange = "opacity";
 
 function revealMain3D() {
   if (main3DReady) {
@@ -54,11 +63,27 @@ function revealMain3D() {
   }
 
   main3DReady = true;
-  container.style.opacity = "1";
+  renderer.domElement.style.opacity = "1";
+  renderer.domElement.style.visibility = "visible";
+  window.__main3DReady = true;
 
   window.dispatchEvent(
     new CustomEvent("main3d-ready")
   );
+}
+
+let roomReady = false;
+let planetReady = false;
+let mainAnimationStarted = false;
+
+function maybeStartMain3D() {
+  if (mainAnimationStarted || !roomReady || !planetReady) {
+    return;
+  }
+
+  mainAnimationStarted = true;
+  resize();
+  requestAnimationFrame(animate);
 }
 
 // ---------------------------------------------------------------
@@ -651,19 +676,9 @@ function fadeOutPreview(
 }
 
 /* ---------------------------------------------------------------
-   SHOW PREVIEW IMMEDIATELY
-   --------------------------------------------------------------- */
-
-roomPreview =
-  createRoomPreview();
-
-roomGroup.add(
-  roomPreview
-);
-
-
-/* ---------------------------------------------------------------
    REAL ROOM MODEL
+   The real GLB is loaded before the first visible WebGL frame.
+   The procedural preview is used only if the GLB fails.
    --------------------------------------------------------------- */
 
 function prepareRoom(model) {
@@ -768,21 +783,25 @@ if (roomPreview) {
       "V3.5 interior room loaded."
     );
 
+    roomReady = true;
+    maybeStartMain3D();
+
   },
 
   undefined,
 
   (error) => {
 
-    /*
-     * Keep the procedural preview
-     * visible if the GLB fails.
-     */
-
     console.warn(
       "interior-room.glb could not be loaded. Preview retained.",
       error
     );
+
+    roomPreview = createRoomPreview();
+    roomGroup.add(roomPreview);
+
+    roomReady = true;
+    maybeStartMain3D();
 
   }
 
@@ -890,29 +909,9 @@ function createPlanetPreview() {
 
 
 /* ---------------------------------------------------------------
-   PLANET PREVIEW — IMMEDIATE
-   --------------------------------------------------------------- */
-
-planetPreview =
-  createPlanetPreview();
-
-
-planetPreview.position.set(
-  0.15,
-  1.58,
-  -3.62
-);
-
-planetPreview.rotation.y =
-  -0.35;
-
-planetGroup.add(
-  planetPreview
-);
-
-
-/* ---------------------------------------------------------------
    LOAD REAL PLANET
+   The real GLB is loaded before the first visible WebGL frame.
+   The procedural preview is used only if the GLB fails.
    --------------------------------------------------------------- */
 
 loader.load(
@@ -1035,6 +1034,9 @@ if (planetPreview) {
       "V3.5 planet loaded behind the window."
     );
 
+    planetReady = true;
+    maybeStartMain3D();
+
   },
 
   undefined,
@@ -1045,6 +1047,14 @@ if (planetPreview) {
       "planet.glb could not be loaded. Preview retained.",
       error
     );
+
+    planetPreview = createPlanetPreview();
+    planetPreview.position.set(0.15, 1.58, -3.62);
+    planetPreview.rotation.y = -0.35;
+    planetGroup.add(planetPreview);
+
+    planetReady = true;
+    maybeStartMain3D();
 
   }
 
@@ -1163,4 +1173,3 @@ function resize() {
 
 window.addEventListener("resize", resize);
 resize();
-animate();

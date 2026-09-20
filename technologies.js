@@ -19,7 +19,6 @@ if (!container) {
    ========================================================= */
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x060708);
 
 
 /* =========================================================
@@ -48,8 +47,11 @@ camera.position.set(
 
 const renderer = new THREE.WebGLRenderer({
     antialias: true,
-    alpha: false
+    alpha: true,
+    powerPreference: "high-performance"
 });
+
+renderer.setClearColor(0x000000, 0);
 
 renderer.setPixelRatio(
     Math.min(window.devicePixelRatio, 2)
@@ -61,6 +63,36 @@ renderer.setSize(
 );
 
 container.appendChild(renderer.domElement);
+
+
+/* =========================================================
+   SCENE READY GATE
+   ========================================================= */
+
+let sceneReady = false;
+
+function markSceneReady() {
+
+    if (sceneReady) {
+        return;
+    }
+
+    sceneReady = true;
+
+    renderer.render(
+        scene,
+        camera
+    );
+
+    document.body.classList.remove(
+        "scene-loading"
+    );
+
+    document.body.classList.add(
+        "scene-ready"
+    );
+
+}
 
 
 /* =========================================================
@@ -359,23 +391,10 @@ function createPlanetPreview() {
 
 
 /* =========================================================
-   IMMEDIATE PLANET
+   PLANET FALLBACK
    ========================================================= */
 
-/*
- * Create and display the lightweight planet immediately.
- */
-
-planet =
-    createPlanetPreview();
-
-planet.scale.setScalar(
-    0.965
-);
-
-scene.add(
-    planet
-);
+let planetPreview = null;
 
 
 /* =========================================================
@@ -623,18 +642,8 @@ gltfLoader.load(
 
 
         /* -------------------------------------------------------
-           SWAP PREVIEW → REAL MODEL
+           SHOW REAL MODEL
            ------------------------------------------------------- */
-
-        scene.remove(
-            planet
-        );
-
-
-        disposePlanetPreview(
-            planet
-        );
-
 
         planet =
             realPlanet;
@@ -643,6 +652,9 @@ gltfLoader.load(
         scene.add(
             planet
         );
+
+
+        markSceneReady();
 
     },
 
@@ -660,9 +672,22 @@ gltfLoader.load(
          */
 
         console.warn(
-            "Unable to load Purple Planet model. Keeping preview.",
+            "Unable to load Purple Planet model. Showing fallback preview.",
             error
         );
+
+        planet =
+            createPlanetPreview();
+
+        planet.scale.setScalar(
+            0.965
+        );
+
+        scene.add(
+            planet
+        );
+
+        markSceneReady();
 
     }
 
@@ -1491,6 +1516,10 @@ function animate() {
     requestAnimationFrame(
         animate
     );
+
+    if (!sceneReady) {
+        return;
+    }
 
     const elapsed =
         clock.getElapsedTime();

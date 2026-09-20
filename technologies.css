@@ -11,6 +11,15 @@ body {
   overflow: hidden;
 }
 
+/* Hide the page until the real 3D asset has rendered its first frame. */
+body.scene-loading {
+  visibility: hidden;
+}
+
+body.scene-ready {
+  visibility: visible;
+}
+
 
 /* =========================================================
    3D CANVAS
@@ -22,8 +31,9 @@ body {
   width: 100%;
   height: 100vh;
   z-index: 0;
-  background: #060708;
+  background: transparent;
 }
+
 
 #webgl canvas {
   display: block;
